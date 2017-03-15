@@ -1,0 +1,12 @@
+if TARGET_MX6MARTA
+
+config SYS_BOARD
+	default "mx6marta"
+
+config SYS_VENDOR
+	default "gelco"
+
+config SYS_CONFIG_NAME
+	default "mx6marta"
+
+endif

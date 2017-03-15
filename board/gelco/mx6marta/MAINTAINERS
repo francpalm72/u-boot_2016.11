@@ -1,0 +1,8 @@
+MX6MARTA BOARD
+M:	Francesco Palmisano <francesco.palmisano@gmail.com>
+S:	Maintained
+F:	board/gelco/mx6marta/
+F:	include/configs/mx6marta.h
+F:	configs/mx6dlmarta_defconfig
+F:	configs/mx6qmarta_defconfig
+F:	configs/mx6marta_spl_defconfig
