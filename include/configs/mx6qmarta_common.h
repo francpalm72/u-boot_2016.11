@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2012 Freescale Semiconductor, Inc.
  *
- * Configuration settings for the Freescale i.MX6Q SabreSD board.
+ * Configuration settings for the Freescale i.MX6Q Marta board.
  *
  * SPDX-License-Identifier:	GPL-2.0+
  */
 
-#ifndef __MX6QSABRE_COMMON_CONFIG_H
-#define __MX6QSABRE_COMMON_CONFIG_H
+#ifndef __MX6QMARTA_COMMON_CONFIG_H
+#define __MX6QMARTA_COMMON_CONFIG_H
 
 #include "mx6_common.h"
 
@@ -22,7 +22,14 @@
 #define CONFIG_MXC_UART
 
 /* MMC Configs */
+#define CONFIG_FSL_ESDHC
+#define CONFIG_FSL_USDHC
 #define CONFIG_SYS_FSL_ESDHC_ADDR      0
+
+#define CONFIG_MMC
+#define CONFIG_GENERIC_MMC
+#define CONFIG_BOUNCE_BUFFER
+#define CONFIG_DOS_PARTITION
 
 #define CONFIG_FEC_MXC
 #define CONFIG_MII
@@ -32,15 +39,15 @@
 #define CONFIG_FEC_MXC_PHYADDR		1
 
 #define CONFIG_PHYLIB
-#define CONFIG_PHY_ATHEROS
+/*#define CONFIG_PHY_ATHEROS*/
 
-#ifdef CONFIG_CMD_SF
-#define CONFIG_MXC_SPI
-#define CONFIG_SF_DEFAULT_BUS		0
-#define CONFIG_SF_DEFAULT_CS		0
-#define CONFIG_SF_DEFAULT_SPEED		20000000
-#define CONFIG_SF_DEFAULT_MODE		SPI_MODE_0
-#endif
+/*#ifdef CONFIG_CMD_SF*/
+/*#define CONFIG_MXC_SPI*/
+/*#define CONFIG_SF_DEFAULT_BUS		0*/
+/*#define CONFIG_SF_DEFAULT_CS		0*/
+/*#define CONFIG_SF_DEFAULT_SPEED		20000000*/
+/*#define CONFIG_SF_DEFAULT_MODE		SPI_MODE_0*/
+/*#endif*/
 
 /* Command definition */
 #define CONFIG_CMD_BMODE
@@ -231,31 +238,31 @@
 #endif
 
 /* Framebuffer */
-#define CONFIG_VIDEO_IPUV3
-#define CONFIG_VIDEO_BMP_RLE8
-#define CONFIG_SPLASH_SCREEN
-#define CONFIG_SPLASH_SCREEN_ALIGN
-#define CONFIG_BMP_16BPP
-#define CONFIG_VIDEO_LOGO
-#define CONFIG_VIDEO_BMP_LOGO
-#ifdef CONFIG_MX6DL
-#define CONFIG_IPUV3_CLK 198000000
-#else
-#define CONFIG_IPUV3_CLK 264000000
-#endif
-#define CONFIG_IMX_HDMI
-#define CONFIG_IMX_VIDEO_SKIP
+/*#define CONFIG_VIDEO_IPUV3*/
+/*#define CONFIG_VIDEO_BMP_RLE8*/
+/*#define CONFIG_SPLASH_SCREEN*/
+/*#define CONFIG_SPLASH_SCREEN_ALIGN*/
+/*#define CONFIG_BMP_16BPP*/
+/*#define CONFIG_VIDEO_LOGO*/
+/*#define CONFIG_VIDEO_BMP_LOGO*/
+/*#ifdef CONFIG_MX6DL*/
+/*#define CONFIG_IPUV3_CLK 198000000*/
+/*#else*/
+/*#define CONFIG_IPUV3_CLK 264000000*/
+/*#endif*/
+/*#define CONFIG_IMX_HDMI*/
+/*#define CONFIG_IMX_VIDEO_SKIP*/
 
-#ifndef CONFIG_SPL
-#define CONFIG_USBD_HS
+/*#ifndef CONFIG_SPL*/
+/*#define CONFIG_USBD_HS*/
 
-#define CONFIG_USB_FUNCTION_MASS_STORAGE
+/*#define CONFIG_USB_FUNCTION_MASS_STORAGE*/
 
-#define CONFIG_USB_FUNCTION_FASTBOOT
-#define CONFIG_CMD_FASTBOOT
-#define CONFIG_ANDROID_BOOT_IMAGE
-#define CONFIG_FASTBOOT_BUF_ADDR   CONFIG_SYS_LOAD_ADDR
-#define CONFIG_FASTBOOT_BUF_SIZE   0x07000000
-#endif
+/*#define CONFIG_USB_FUNCTION_FASTBOOT*/
+/*#define CONFIG_CMD_FASTBOOT*/
+/*#define CONFIG_ANDROID_BOOT_IMAGE*/
+/*#define CONFIG_FASTBOOT_BUF_ADDR   CONFIG_SYS_LOAD_ADDR*/
+/*#define CONFIG_FASTBOOT_BUF_SIZE   0x07000000*/
+/*#endif*/
 
-#endif                         /* __MX6QSABRE_COMMON_CONFIG_H */
+#endif                         /* __MX6QMARTA_COMMON_CONFIG_H */

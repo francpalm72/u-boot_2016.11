@@ -116,9 +116,8 @@ config TARGET_MX6SABRESD
 	select DM
 	select DM_THERMAL
 
-config TARGET_MX6MARTA
-	bool "mx6marta"
-	select SUPPORT_SPL
+config TARGET_MX6QMARTA
+	bool "mx6qmarta"
 	select DM
 	select DM_THERMAL
 
@@ -245,7 +244,7 @@ source "board/engicam/icorem6/Kconfig"
 source "board/freescale/mx6qarm2/Kconfig"
 source "board/freescale/mx6qsabreauto/Kconfig"
 source "board/freescale/mx6sabresd/Kconfig"
-source "board/gelco/mx6marta/Kconfig"
+source "board/gelco/mx6qmarta/Kconfig"
 source "board/freescale/mx6slevk/Kconfig"
 source "board/freescale/mx6sxsabresd/Kconfig"
 source "board/freescale/mx6sxsabreauto/Kconfig"
