@@ -130,8 +130,7 @@ void mmc_trace_state(struct mmc *mmc, struct mmc_cmd *cmd)
 int mmc_send_cmd(struct mmc *mmc, struct mmc_cmd *cmd, struct mmc_data *data)
 {
 	int ret;
-if(cmd->cmdidx==MMC_CMD_SEND_EXT_CSD)
-printf("CURR MMC_CMD_SEND_EXT_CSD\n");
+	
 	mmmc_trace_before_send(mmc, cmd);
 	ret = mmc->cfg->ops->send_cmd(mmc, cmd, data);
 	mmmc_trace_after_send(mmc, cmd, ret);
@@ -487,7 +486,7 @@ static int mmc_send_ext_csd(struct mmc *mmc, u8 *ext_csd)
 	data.flags = MMC_DATA_READ;
 
 	err = mmc_send_cmd(mmc, &cmd, &data);
-printf("mmc_send_ext_csd1:%d\n",err);
+//printf("mmc_send_ext_csd1:%d\n",err);
 	return err;
 }
 
@@ -531,7 +530,7 @@ static int mmc_change_freq(struct mmc *mmc)
 	mmc->card_caps |= MMC_MODE_4BIT | MMC_MODE_8BIT;
 
 	err = mmc_send_ext_csd(mmc, ext_csd);
-printf("mmc_change_freq1:%d\n",err);
+//printf("mmc_change_freq1:%d\n",err);
 	if (err)
 		return err;
 
@@ -544,7 +543,7 @@ printf("mmc_change_freq1:%d\n",err);
 
 	/* Now check to see that it worked */
 	err = mmc_send_ext_csd(mmc, ext_csd);
-printf("mmc_change_freq2:%d\n",err);
+//printf("mmc_change_freq2:%d\n",err);
 	if (err)
 		return err;
 
@@ -684,7 +683,7 @@ int mmc_hwpart_config(struct mmc *mmc,
 	}
 
 	err = mmc_send_ext_csd(mmc, ext_csd);
-printf("mmc_hwpart_config1:%d\n",err);
+//printf("mmc_hwpart_config1:%d\n",err);
 	if (err)
 		return err;
 
@@ -1090,7 +1089,7 @@ static int mmc_startup(struct mmc *mmc)
 		cmd.resp_type = MMC_RSP_R1;
 		cmd.cmdarg = 1;
 		err = mmc_send_cmd(mmc, &cmd, NULL);
-printf("mmc_startup1:%d\n",err);
+//printf("mmc_startup1:%d\n",err);
 		if (err)
 			return err;
 	}
@@ -1104,7 +1103,7 @@ printf("mmc_startup1:%d\n",err);
 
 	err = mmc_send_cmd(mmc, &cmd, NULL);
 
-printf("mmc_startup2:%d\n",err);
+//printf("mmc_startup2:%d\n",err);
 	if (err)
 		return err;
 
@@ -1121,7 +1120,7 @@ printf("mmc_startup2:%d\n",err);
 		cmd.resp_type = MMC_RSP_R6;
 
 		err = mmc_send_cmd(mmc, &cmd, NULL);
-printf("mmc_startup3:%d\n",err);
+//printf("mmc_startup3:%d\n",err);
 		if (err)
 			return err;
 
@@ -1138,7 +1137,7 @@ printf("mmc_startup3:%d\n",err);
 
 	/* Waiting for the ready status */
 	mmc_send_status(mmc, timeout);
-printf("mmc_startup4:%d\n",err);
+//printf("mmc_startup4:%d\n",err);
 	if (err)
 		return err;
 
@@ -1223,7 +1222,7 @@ printf("mmc_startup4:%d\n",err);
 		cmd.resp_type = MMC_RSP_R1;
 		cmd.cmdarg = mmc->rca << 16;
 		err = mmc_send_cmd(mmc, &cmd, NULL);
-printf("mmc_startup5:%d\n",err);
+//printf("mmc_startup5:%d\n",err);
 		if (err)
 			return err;
 	}
@@ -1236,7 +1235,7 @@ printf("mmc_startup5:%d\n",err);
 	if (!IS_SD(mmc) && (mmc->version >= MMC_VERSION_4)) {
 		/* check  ext_csd version and capacity */
 		err = mmc_send_ext_csd(mmc, ext_csd);
-printf("mmc_startup6:%d\n",err);
+//printf("mmc_startup6:%d\n",err);
 		if (err)
 			return err;
 		if (ext_csd[EXT_CSD_REV] >= 2) {
@@ -1344,7 +1343,7 @@ printf("mmc_startup6:%d\n",err);
 		if (has_parts) {
 			err = mmc_switch(mmc, EXT_CSD_CMD_SET_NORMAL,
 				EXT_CSD_ERASE_GROUP_DEF, 1);
-printf("mmc_startup7:%d\n",err);
+//printf("mmc_startup7:%d\n",err);
 			if (err)
 				return err;
 			else
@@ -1385,7 +1384,7 @@ printf("mmc_startup7:%d\n",err);
 	}
 
 	err = mmc_set_capacity(mmc, mmc_get_blk_desc(mmc)->hwpart);
-printf("mmc_startup8:%d\n",err);
+//printf("mmc_startup8:%d\n",err);
 	if (err)
 		return err;
 
@@ -1393,7 +1392,7 @@ printf("mmc_startup8:%d\n",err);
 		err = sd_change_freq(mmc);
 	else
 		err = mmc_change_freq(mmc);
-printf("mmc_startup9:%d\n",err);
+//printf("mmc_startup9:%d\n",err);
 	if (err)
 		return err;
 
@@ -1407,7 +1406,7 @@ printf("mmc_startup9:%d\n",err);
 			cmd.cmdarg = mmc->rca << 16;
 
 			err = mmc_send_cmd(mmc, &cmd, NULL);
-printf("mmc_startup10:%d\n",err);
+//printf("mmc_startup10:%d\n",err);
 			if (err)
 				return err;
 
@@ -1415,7 +1414,7 @@ printf("mmc_startup10:%d\n",err);
 			cmd.resp_type = MMC_RSP_R1;
 			cmd.cmdarg = 2;
 			err = mmc_send_cmd(mmc, &cmd, NULL);
-printf("mmc_startup11:%d\n",err);
+//printf("mmc_startup11:%d\n",err);
 			if (err)
 				return err;
 
@@ -1423,7 +1422,7 @@ printf("mmc_startup11:%d\n",err);
 		}
 
 		err = sd_read_ssr(mmc);
-printf("mmc_startup12:%d\n",err);
+//printf("mmc_startup12:%d\n",err);
 		if (err)
 			return err;
 
@@ -1492,7 +1491,7 @@ printf("mmc_startup12:%d\n",err);
 			mmc_set_bus_width(mmc, widths[idx]);
 
 			err = mmc_send_ext_csd(mmc, test_csd);
-printf("mmc_startup13:%d\n",err);
+//printf("mmc_startup13:%d\n",err);
 			if (err)
 				continue;
 
@@ -1511,7 +1510,7 @@ printf("mmc_startup13:%d\n",err);
 			else
 				err = -EBADMSG;
 		}
-printf("mmc_startup14:%d\n",err);
+//printf("mmc_startup14:%d\n",err);
 		if (err)
 			return err;
 
