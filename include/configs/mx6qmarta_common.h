@@ -81,7 +81,7 @@
 #ifndef VIDEO_ARGS_SCRIPT
 #define VIDEO_ARGS_SCRIPT ""
 #endif
-
+/*
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	"script=boot.scr\0" \
 	"image=zImage\0" \
@@ -192,7 +192,7 @@
 				"if test $fdt_file = undefined; then " \
 					"echo WARNING: Could not determine dtb to use; fi; " \
 			"fi;\0"
-
+*/
 
 #define CONFIG_ARP_TIMEOUT     200UL
 
