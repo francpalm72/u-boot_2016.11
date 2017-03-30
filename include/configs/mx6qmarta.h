@@ -51,7 +51,7 @@
 	"console=ttymxc2\0" \
 	"mmcdev=" __stringify(CONFIG_SYS_MMC_ENV_DEV) "\0" \
 	"mmcpart=1\0" \
-	"mmcroot=" CONFIG_MMCROOT " rootwait rw\0" \
+	"mmcroot=" CONFIG_MMCROOT " ro rootwait lpj=7905280 quiet\0" \
 	"mmcautodetect=yes\0" \
 	"mmcargs=setenv bootargs console=${console},${baudrate} root=${mmcroot} \0" \
 	"netargs=setenv bootargs console=${console},${baudrate} root=/dev/nfs nfsroot=${serverip}:${nfsroot},v3,tcp\0" \

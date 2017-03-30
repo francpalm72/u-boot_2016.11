@@ -393,7 +393,9 @@ static int mmc_send_op_cond_iter(struct mmc *mmc, int use_arg)
 			(mmc->cfg->voltages &
 			(mmc->ocr & OCR_VOLTAGE_MASK)) |
 			(mmc->ocr & OCR_ACCESS_MODE);
-
+	else
+		cmd.cmdarg = 0xC0FF8080;
+		
 	err = mmc_send_cmd(mmc, &cmd, NULL);
 	if (err)
 		return err;
