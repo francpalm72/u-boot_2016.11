@@ -13,7 +13,7 @@
 #define CONFIG_MXC_UART_BASE	UART3_BASE
 #define CONSOLE_DEV		"ttymxc2"
 
-#define CONFIG_MMCROOT	"/dev/mmcblk2p1"	//mmcbkl2=SD3   mmcblk3=SD4
+#define CONFIG_MMCROOT	"/dev/mmcblk3p1"	//mmcbkl2=SD3   mmcblk3=SD4
 
 /*#define CONFIG_MMC_TRACE*/
 
@@ -21,7 +21,7 @@
 
 #define CONFIG_SYS_FSL_USDHC_NUM	2
 #if defined(CONFIG_ENV_IS_IN_MMC)
-#define CONFIG_SYS_MMC_ENV_DEV		0	//0=SD3   1=SD4
+#define CONFIG_SYS_MMC_ENV_DEV		1	//0=SD3   1=SD4
 #endif
 
 #ifdef CONFIG_DEFAULT_FDT_FILE
@@ -83,8 +83,8 @@
   
   
 #define CONFIG_PHY_MARVELL
-#define CONFIG_IPADDR	192.168.168.200
-#define CONFIG_SERVERIP 192.168.168.201
+#define CONFIG_IPADDR	192.168.1.100
+#define CONFIG_SERVERIP 192.168.1.101
 #define CONFIG_ETHADDR 00:11:22:00:11:22
 
 #endif                         /* __MX6QMARTA_CONFIG_H */

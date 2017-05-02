@@ -650,6 +650,12 @@ int board_init(void)
 //	setup_display();
 //#endif
 //	setup_iomux_eimnor();
+
+	gpio_direction_output(IMX_GPIO_NR(4, 9), 1);	//KEY_ROW1__GPIO4_IO09   ECSPI1_SS0 - 105
+	gpio_direction_output(IMX_GPIO_NR(4, 24), 1);	//DISP0_DAT3__GPIO4_IO24 ECSPI3_SS0 - 120
+	gpio_direction_output(IMX_GPIO_NR(3, 20), 1);	//EIM_D20__GPIO3_IO20    ECSPI4_SS0 - 84
+	gpio_direction_output(IMX_GPIO_NR(1, 17), 1);	//SD1_DAT1__GPIO1_IO17   ECSPI5_SS0 - 17
+	
 	return 0;
 }
 
@@ -726,7 +732,7 @@ int checkboard(void)
 		break;
 	}
 
-	printf("Board: MX6Q-Marta SD3 rev%s\n", revname);
+	printf("Board: MX6Q-Marta SD4 rev%s\n", revname);
 
 	return 0;
 }
