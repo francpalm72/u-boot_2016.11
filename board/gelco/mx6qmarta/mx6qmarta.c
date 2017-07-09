@@ -78,8 +78,15 @@ static iomux_v3_cfg_t const enet_pads[] = {
 	MX6_PAD_ENET_MDC__ENET_MDC		| MUX_PAD_CTRL(ENET_PAD_CTRL),
 	MX6_PAD_ENET_MDIO__ENET_MDIO		| MUX_PAD_CTRL(ENET_PAD_CTRL),
 	MX6_PAD_ENET_REF_CLK__ENET_TX_CLK	| MUX_PAD_CTRL(ENET_PAD_CTRL),	//???????
-	MX6_PAD_ENET_CRS_DV__GPIO1_IO25		| MUX_PAD_CTRL(NO_PAD_CTRL),	//reset
-	MX6_PAD_ENET_RXD1__GPIO1_IO26		| MUX_PAD_CTRL(NO_PAD_CTRL),	//interrupt
+	//DD0
+	//MX6_PAD_ENET_CRS_DV__GPIO1_IO25		| MUX_PAD_CTRL(NO_PAD_CTRL),	//reset
+	//DD1
+	MX6_PAD_DISP0_DAT15__GPIO5_IO09		| MUX_PAD_CTRL(NO_PAD_CTRL),	//DISP0_DAT15__GPIO5_IO09  T22  RGMII_RST_PHY
+	
+	//DD0
+	//MX6_PAD_ENET_RXD1__GPIO1_IO26		| MUX_PAD_CTRL(NO_PAD_CTRL),	//interrupt
+	//DD1
+	MX6_PAD_NANDF_CLE__GPIO6_IO07	| MUX_PAD_CTRL(NO_PAD_CTRL),		//NANDF_CLE_GPIO6_IO07  C15  RGMII_INT_PHY
 	
 	MX6_PAD_RGMII_TXC__RGMII_TXC	| MUX_PAD_CTRL(ENET_PAD_CTRL),
 	MX6_PAD_RGMII_TD0__RGMII_TD0	| MUX_PAD_CTRL(ENET_PAD_CTRL),
@@ -247,9 +254,19 @@ static iomux_v3_cfg_t const eimnor_pads[] = {
 static void setup_iomux_enet(void)
 {
 	imx_iomux_v3_setup_multiple_pads(enet_pads, ARRAY_SIZE(enet_pads));
-	gpio_direction_output(IMX_GPIO_NR(1, 25) , 0);
+	
+	//DD0
+	//gpio_direction_output(IMX_GPIO_NR(1, 25) , 0);
+	//DD1
+	gpio_direction_output(IMX_GPIO_NR(5, 9) , 0);	//DISP0_DAT15__GPIO5_IO09  T22  RGMII_RST_PHY
+	
 	mdelay(10);
-	gpio_set_value(IMX_GPIO_NR(1, 25), 1);
+	
+	//DD0
+	//gpio_set_value(IMX_GPIO_NR(1, 25), 1);
+	//DD1
+	gpio_set_value(IMX_GPIO_NR(5, 9), 1);	//DISP0_DAT15__GPIO5_IO09  T22  RGMII_RST_PHY
+	
 	udelay(100);
 }
 
@@ -651,10 +668,105 @@ int board_init(void)
 //#endif
 //	setup_iomux_eimnor();
 
-	gpio_direction_output(IMX_GPIO_NR(4, 9), 1);	//KEY_ROW1__GPIO4_IO09   ECSPI1_SS0 - 105
-	gpio_direction_output(IMX_GPIO_NR(4, 24), 1);	//DISP0_DAT3__GPIO4_IO24 ECSPI3_SS0 - 120
-	gpio_direction_output(IMX_GPIO_NR(3, 20), 1);	//EIM_D20__GPIO3_IO20    ECSPI4_SS0 - 84
-	gpio_direction_output(IMX_GPIO_NR(1, 17), 1);	//SD1_DAT1__GPIO1_IO17   ECSPI5_SS0 - 17
+	//VECCHIA IMPOSTAZIONE GPIO PER DD0
+	//gpio_direction_output(IMX_GPIO_NR(4, 9), 1);	//KEY_ROW1__GPIO4_IO09   ECSPI1_SS0 - 105
+	//gpio_direction_output(IMX_GPIO_NR(4, 24), 1);	//DISP0_DAT3__GPIO4_IO24 ECSPI3_SS0 - 120
+	//gpio_direction_output(IMX_GPIO_NR(3, 20), 1);	//EIM_D20__GPIO3_IO20    ECSPI4_SS0 - 84
+	//gpio_direction_output(IMX_GPIO_NR(1, 17), 1);	//SD1_DAT1__GPIO1_IO17   ECSPI5_SS0 - 17
+	
+	//NUOVA IMPOSTAZIONE GPIO PER DD1
+	gpio_direction_output(IMX_GPIO_NR(2, 27), 1);	//EIM_LBA__GPIO2_IO27  K22  SPARE_1_OUT_CPU
+	gpio_direction_output(IMX_GPIO_NR(2, 25), 1);	//EIM_OE__GPIO2_IO25   J24  SPARE_3_OUT_CPU
+	gpio_direction_output(IMX_GPIO_NR(2, 26), 1);	//EIM_RW__GPIO2_IO26   K20  SPARE_2_OUT_CPU
+	
+	gpio_direction_output(IMX_GPIO_NR(2, 23), 1);	//EIM_CS0__GPIO2_IO23  H24  RESET_ADC_CPU
+	gpio_direction_output(IMX_GPIO_NR(2, 24), 0);	//EIM_CS1__GPIO2_IO24  J23  SKR_PWR_CTR_CPU <===???
+	
+	gpio_direction_output(IMX_GPIO_NR(2, 22), 0);	//EIM_A16__GPIO2_IO22  H25  EASAU_CPU
+	gpio_direction_output(IMX_GPIO_NR(2, 21), 0);	//EIM_A17__GPIO2_IO21  G24  EEO_CPU
+	gpio_direction_output(IMX_GPIO_NR(2, 20), 0);	//EIM_A18__GPIO2_IO20  J22  ESS_CPU
+	gpio_direction_output(IMX_GPIO_NR(2, 19), 0);	//EIM_A19__GPIO2_IO19  G25  EPA_CPU
+	gpio_direction_output(IMX_GPIO_NR(2, 18), 0);	//EIM_A20__GPIO2_IO18  H22  EDB_CPU
+	gpio_direction_output(IMX_GPIO_NR(2, 17), 0);	//EIM_A21__GPIO2_IO17  H23  EFB_CPU
+	gpio_direction_output(IMX_GPIO_NR(2, 16), 0);	//EIM_A22__GPIO2_IO16  F24  EAB_CPU
+	gpio_direction_output(IMX_GPIO_NR(6, 6), 0);	//EIM_A23__GPIO6_IO06  J21  GPIO6_06_UNUSED
+	gpio_direction_output(IMX_GPIO_NR(5, 4), 0);	//EIM_A24__GPIO5_IO04  F25  INH_SORVOLO_CPU
+	
+	gpio_direction_output(IMX_GPIO_NR(5, 2), 0);	//EIM_A25__GPIO5_IO02  H19  EBT_CPU
+	
+	gpio_direction_output(IMX_GPIO_NR(3, 31), 0);	//EIM_D31__GPIO3_IO31  H21  UART3_RTS_B_CPU
+	
+	gpio_direction_output(IMX_GPIO_NR(2, 30), 0);	//EIM_EB2__GPIO2_IO30  E22  CMD_SPIRA_CPU <===???
+	gpio_direction_output(IMX_GPIO_NR(2, 31), 0);	//EIM_EB3__GPIO2_IO31  F23  INH_G_SWITCH_CPU <===???
+	
+	gpio_direction_output(IMX_GPIO_NR(6, 31), 0);	//EIM_BCLK__GPIO6_IO31 N22  EBT_SK_CPU
+	gpio_direction_output(IMX_GPIO_NR(5, 0), 0);	//EIM_WAIT__GPIO5_IO00 M25  BIT_L_CPU
+	
+	gpio_direction_output(IMX_GPIO_NR(2, 28), 0);	//EIM_EB0__GPIO2_IO28  K21  GPIO2_IO28_UNUSED
+	
+	gpio_direction_output(IMX_GPIO_NR(1, 2), 0);	//GPIO_2__GPIO1_IO02     T1  IT_UC
+	gpio_direction_output(IMX_GPIO_NR(1, 4), 0);	//GPIO_4__GPIO1_IO04     R6  IT_SL_1
+	gpio_direction_output(IMX_GPIO_NR(1, 7), 0);	//GPIO_7__GPIO1_IO07     R3  IT_SL_2
+	gpio_direction_output(IMX_GPIO_NR(1, 8), 0);	//GPIO_8__GPIO1_IO08     R5  IT_SL_3
+	gpio_direction_output(IMX_GPIO_NR(1, 9), 0);	//GPIO_9__GPIO1_IO09     T2  IT_SL_4
+	gpio_direction_output(IMX_GPIO_NR(1, 11), 0);	//SD2_CMD__GPIO1_IO11    F19  IT_SL_5
+	gpio_direction_output(IMX_GPIO_NR(1, 10), 0);	//SD2_CLK__GPIO1_IO10    C21  IT_SL_6
+	gpio_direction_output(IMX_GPIO_NR(1, 15), 0);	//SD2_DAT0__GPIO1_IO15   A22  IT_SL_7
+	gpio_direction_output(IMX_GPIO_NR(1, 14), 0);	//SD2_DAT1__GPIO1_IO14   E20  IT_SL_8
+	gpio_direction_output(IMX_GPIO_NR(1, 13), 0);	//SD2_DAT2__GPIO1_IO13   A23  IT_SL_10
+				
+	gpio_direction_output(IMX_GPIO_NR(5, 18), 0);	//CSI0_PIXCLK__GPIO5_IO18  P1  ARM_EVENTO
+	gpio_direction_output(IMX_GPIO_NR(5, 20), 0);	//CSI0_DATA_EN__GPIO5_IO20 P3  ARM_TRACE_CLK
+	gpio_direction_output(IMX_GPIO_NR(5, 21), 0);	//CSI0_VSYNC__GPIO5_IO21   N2  ARM_TRACE00
+	gpio_direction_output(IMX_GPIO_NR(5, 22), 0);	//CSI0_DAT4__GPIO5_IO22    N1  ARM_TRACE01
+	gpio_direction_output(IMX_GPIO_NR(5, 23), 0);	//CSI0_DAT5__GPIO5_IO23    P2  ARM_TRACE02
+	gpio_direction_output(IMX_GPIO_NR(5, 24), 0);	//CSI0_DAT6__GPIO5_IO24    N4  ARM_TRACE03
+	gpio_direction_output(IMX_GPIO_NR(5, 25), 0);	//CSI0_DAT7__GPIO5_IO25    N3  ARM_TRACE04
+	gpio_direction_output(IMX_GPIO_NR(5, 26), 0);	//CSI0_DAT8__GPIO5_IO26    N6  ARM_TRACE05
+	gpio_direction_output(IMX_GPIO_NR(5, 27), 0);	//CSI0_DAT9__GPIO5_IO27    N5  ARM_TRACE06
+	gpio_direction_output(IMX_GPIO_NR(5, 28), 0);	//CSI0_DAT10__GPIO5_IO28   M1  ARM_TRACE07
+	
+	
+	gpio_direction_output(IMX_GPIO_NR(4, 29), 0);	//DISP0_DAT8__GPIO4_IO29  R22  CMD_CONSENSOFUOCO_CPU <===???
+	gpio_direction_output(IMX_GPIO_NR(4, 30), 0);	//DISP0_DAT9__GPIO4_IO30  T25  CMD_FMP_INT_CPU <===???
+	
+	gpio_direction_output(IMX_GPIO_NR(5, 5), 0);	//DISP0_DAT11__GPIO5_IO05  T23  SENS_D00_CPU <===???
+	gpio_direction_output(IMX_GPIO_NR(5, 6), 0);	//DISP0_DAT12__GPIO5_IO06  T24  SENS_D01_CPU <===???
+	gpio_direction_output(IMX_GPIO_NR(5, 7), 0);	//DISP0_DAT13__GPIO5_IO07  R20  OK_CPU <===???
+	gpio_direction_output(IMX_GPIO_NR(5, 8), 0);	//DISP0_DAT14__GPIO5_IO08  U25  GO_SW_CPU <===???
+	
+	gpio_direction_output(IMX_GPIO_NR(5, 10), 0);	//DISP0_DAT16__GPIO5_IO10  T21  SEL_ANT_CPU <===???
+	gpio_direction_output(IMX_GPIO_NR(5, 11), 0);	//DISP0_DAT17__GPIO5_IO11  U24  RESET_L_CPU <===???
+	
+	gpio_direction_output(IMX_GPIO_NR(4, 6), 0);	//KEY_COL0__GPIO4_IO06  W5  GPIO4_IO06_UNUSED
+	gpio_direction_output(IMX_GPIO_NR(4, 15), 0);	//KEY_ROW4__GPIO4_IO15  V5  USB_OTGPWR_EN
+	
+	gpio_direction_output(IMX_GPIO_NR(7, 12), 0);	//GPIO_17__GPIO7_IO12  R1  GPIO7_12_UNUSED
+	gpio_direction_output(IMX_GPIO_NR(4, 5), 0);	//GPIO_19__GPIO4_IO05  P5  IMX6_SPARE_LED
+	
+	gpio_direction_output(IMX_GPIO_NR(2, 0), 0);	//NANDF_D0__GPIO2_IO00  A18  TFUEL_RANGE_SLC <===???
+	gpio_direction_output(IMX_GPIO_NR(2, 1), 0);	//NANDF_D1__GPIO2_IO01  C17  MAINT_SK_CPU <===???
+	gpio_direction_output(IMX_GPIO_NR(2, 2), 0);	//NANDF_D2__GPIO2_IO02  F16  ID_00_CPU <===???
+	gpio_direction_output(IMX_GPIO_NR(2, 3), 0);	//NANDF_D3__GPIO2_IO03  D17  ID_01_CPU <===???
+	gpio_direction_output(IMX_GPIO_NR(2, 4), 0);	//NANDF_D4__GPIO2_IO04  A19  SAFE_SPOLETTA_CPU <===???
+	gpio_direction_output(IMX_GPIO_NR(2, 5), 0);	//NANDF_D5__GPIO2_IO05  B18  ENABLE_DL_CPU <===???
+	gpio_direction_output(IMX_GPIO_NR(2, 6), 0);	//NANDF_D6__GPIO2_IO06  E17  ESA_CPU <===???
+	gpio_direction_output(IMX_GPIO_NR(2, 7), 0);	//NANDF_D7__GPIO2_IO07  C18  ESF_CPU <===???
+	
+	
+	gpio_direction_output(IMX_GPIO_NR(4, 9), 1);	//KEY_ROW1__GPIO4_IO09   ECSPI1_UC_SS0
+	
+	gpio_direction_output(IMX_GPIO_NR(4, 24), 1);	//DISP0_DAT3__GPIO4_IO24  P21  ECSPI3_SS0
+	gpio_direction_output(IMX_GPIO_NR(4, 25), 1);	//DISP0_DAT4__GPIO4_IO25  P20  ECSPI3_SS1
+	gpio_direction_output(IMX_GPIO_NR(4, 26), 1);	//DISP0_DAT5__GPIO4_IO26  R25  ECSPI3_SS2
+	gpio_direction_output(IMX_GPIO_NR(4, 27), 1);	//DISP0_DAT6__GPIO4_IO27  R23  ECSPI3_SS3
+	
+	gpio_direction_output(IMX_GPIO_NR(3, 20), 1);	//EIM_D20__GPIO3_IO20  G20  ECSPI4_SS0
+	
+	gpio_direction_output(IMX_GPIO_NR(1, 17), 1);	//SD1_DAT1__GPIO1_IO17  C20  ECSPI5_SS0
+	gpio_direction_output(IMX_GPIO_NR(1, 19), 1);	//SD1_DAT2__GPIO1_IO19  E19  ECSPI5_SS1
+	gpio_direction_output(IMX_GPIO_NR(1, 21), 1);	//SD1_DAT3__GPIO1_IO21  F18  ECSPI5_SS2
+	gpio_direction_output(IMX_GPIO_NR(1, 12), 1);	//SD2_DAT3__GPIO1_IO12  B22  ECSPI5_SS3
 	
 	return 0;
 }
@@ -732,7 +844,7 @@ int checkboard(void)
 		break;
 	}
 
-	printf("Board: MX6Q-Marta SD4 rev%s\n", revname);
+	printf("Board: MX6Q-Marta SD3 rev%s\n", revname);
 
 	return 0;
 }
