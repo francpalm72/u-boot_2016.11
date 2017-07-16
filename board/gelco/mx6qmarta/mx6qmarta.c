@@ -679,7 +679,7 @@ int board_init(void)
 	gpio_direction_output(IMX_GPIO_NR(2, 25), 1);	//EIM_OE__GPIO2_IO25   J24  SPARE_3_OUT_CPU
 	gpio_direction_output(IMX_GPIO_NR(2, 26), 1);	//EIM_RW__GPIO2_IO26   K20  SPARE_2_OUT_CPU
 	
-	gpio_direction_output(IMX_GPIO_NR(2, 23), 1);	//EIM_CS0__GPIO2_IO23  H24  RESET_ADC_CPU
+	gpio_direction_output(IMX_GPIO_NR(2, 23), 0);	//EIM_CS0__GPIO2_IO23  H24  RESET_ADC_CPU
 	gpio_direction_output(IMX_GPIO_NR(2, 24), 0);	//EIM_CS1__GPIO2_IO24  J23  SKR_PWR_CTR_CPU <===???
 	
 	gpio_direction_output(IMX_GPIO_NR(2, 22), 0);	//EIM_A16__GPIO2_IO22  H25  EASAU_CPU
@@ -709,11 +709,6 @@ int board_init(void)
 	gpio_direction_output(IMX_GPIO_NR(1, 7), 0);	//GPIO_7__GPIO1_IO07     R3  IT_SL_2
 	gpio_direction_output(IMX_GPIO_NR(1, 8), 0);	//GPIO_8__GPIO1_IO08     R5  IT_SL_3
 	gpio_direction_output(IMX_GPIO_NR(1, 9), 0);	//GPIO_9__GPIO1_IO09     T2  IT_SL_4
-	gpio_direction_output(IMX_GPIO_NR(1, 11), 0);	//SD2_CMD__GPIO1_IO11    F19  IT_SL_5
-	gpio_direction_output(IMX_GPIO_NR(1, 10), 0);	//SD2_CLK__GPIO1_IO10    C21  IT_SL_6
-	gpio_direction_output(IMX_GPIO_NR(1, 15), 0);	//SD2_DAT0__GPIO1_IO15   A22  IT_SL_7
-	gpio_direction_output(IMX_GPIO_NR(1, 14), 0);	//SD2_DAT1__GPIO1_IO14   E20  IT_SL_8
-	gpio_direction_output(IMX_GPIO_NR(1, 13), 0);	//SD2_DAT2__GPIO1_IO13   A23  IT_SL_10
 				
 	gpio_direction_output(IMX_GPIO_NR(5, 18), 0);	//CSI0_PIXCLK__GPIO5_IO18  P1  ARM_EVENTO
 	gpio_direction_output(IMX_GPIO_NR(5, 20), 0);	//CSI0_DATA_EN__GPIO5_IO20 P3  ARM_TRACE_CLK
@@ -738,10 +733,8 @@ int board_init(void)
 	gpio_direction_output(IMX_GPIO_NR(5, 10), 0);	//DISP0_DAT16__GPIO5_IO10  T21  SEL_ANT_CPU <===???
 	gpio_direction_output(IMX_GPIO_NR(5, 11), 0);	//DISP0_DAT17__GPIO5_IO11  U24  RESET_L_CPU <===???
 	
-	gpio_direction_output(IMX_GPIO_NR(4, 6), 0);	//KEY_COL0__GPIO4_IO06  W5  GPIO4_IO06_UNUSED
-	gpio_direction_output(IMX_GPIO_NR(4, 15), 0);	//KEY_ROW4__GPIO4_IO15  V5  USB_OTGPWR_EN
 	
-	gpio_direction_output(IMX_GPIO_NR(7, 12), 0);	//GPIO_17__GPIO7_IO12  R1  GPIO7_12_UNUSED
+	gpio_direction_output(IMX_GPIO_NR(4, 15), 0);	//KEY_ROW4__GPIO4_IO15  V5  USB_OTGPWR_EN
 	gpio_direction_output(IMX_GPIO_NR(4, 5), 0);	//GPIO_19__GPIO4_IO05  P5  IMX6_SPARE_LED
 	
 	gpio_direction_output(IMX_GPIO_NR(2, 0), 0);	//NANDF_D0__GPIO2_IO00  A18  TFUEL_RANGE_SLC <===???
