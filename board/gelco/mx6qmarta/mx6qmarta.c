@@ -705,10 +705,6 @@ int board_init(void)
 	gpio_direction_output(IMX_GPIO_NR(2, 28), 0);	//EIM_EB0__GPIO2_IO28  K21  GPIO2_IO28_UNUSED
 	
 	gpio_direction_output(IMX_GPIO_NR(1, 2), 0);	//GPIO_2__GPIO1_IO02     T1  IT_UC
-	gpio_direction_output(IMX_GPIO_NR(1, 4), 0);	//GPIO_4__GPIO1_IO04     R6  IT_SL_1
-	gpio_direction_output(IMX_GPIO_NR(1, 7), 0);	//GPIO_7__GPIO1_IO07     R3  IT_SL_2
-	gpio_direction_output(IMX_GPIO_NR(1, 8), 0);	//GPIO_8__GPIO1_IO08     R5  IT_SL_3
-	gpio_direction_output(IMX_GPIO_NR(1, 9), 0);	//GPIO_9__GPIO1_IO09     T2  IT_SL_4
 				
 	gpio_direction_output(IMX_GPIO_NR(5, 18), 0);	//CSI0_PIXCLK__GPIO5_IO18  P1  ARM_EVENTO
 	gpio_direction_output(IMX_GPIO_NR(5, 20), 0);	//CSI0_DATA_EN__GPIO5_IO20 P3  ARM_TRACE_CLK
@@ -837,7 +833,7 @@ int checkboard(void)
 		break;
 	}
 
-	printf("Board: MX6Q-Marta SD3 rev%s\n", revname);
+	printf("Board: MX6Q-Marte SD3 DD1 rev%s\n", revname);
 
 	return 0;
 }
