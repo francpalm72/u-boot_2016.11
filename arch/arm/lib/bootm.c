@@ -25,6 +25,7 @@
 #include <linux/compiler.h>
 #include <bootm.h>
 #include <vxworks.h>
+#include <asm/gpio.h>
 
 #ifdef CONFIG_ARMV7_NONSEC
 #include <asm/armv7.h>
@@ -71,6 +72,7 @@ void arch_lmb_reserve(struct lmb *lmb)
  */
 static void announce_and_cleanup(int fake)
 {
+
 	printf("\nStarting kernel ...%s\n\n", fake ?
 		"(fake run for tracing)" : "");
 	bootstage_mark_name(BOOTSTAGE_ID_BOOTM_HANDOFF, "start_kernel");
@@ -84,6 +86,7 @@ static void announce_and_cleanup(int fake)
 #ifdef CONFIG_USB_DEVICE
 	udc_disconnect();
 #endif
+
 	cleanup_before_linux();
 }
 
@@ -330,7 +333,8 @@ static void boot_jump_linux(bootm_headers_t *images, int flag)
 							  0, machid, r2);
 		} else
 #endif
-			kernel_entry(0, machid, r2);
+		gpio_set_value(IMX_GPIO_NR(4, 5), 1);	//GPIO_19__GPIO4_IO05  P5  IMX6_SPARE_LED
+		kernel_entry(0, machid, r2);
 	}
 #endif
 }

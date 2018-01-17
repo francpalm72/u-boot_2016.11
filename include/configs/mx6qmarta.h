@@ -13,7 +13,7 @@
 #define CONFIG_MXC_UART_BASE	UART3_BASE
 #define CONSOLE_DEV		"ttymxc2"
 
-#define CONFIG_MMCROOT	"/dev/mmcblk2p1"	//mmcbkl2p1=SD3   mmcblk3p1=SD4
+#define CONFIG_MMCROOT	"/dev/mmcblk3p1"	//mmcbkl2p1=SD3   mmcblk3p1=SD4
 
 /*#define CONFIG_MMC_TRACE*/
 
@@ -21,7 +21,7 @@
 
 #define CONFIG_SYS_FSL_USDHC_NUM	2
 #if defined(CONFIG_ENV_IS_IN_MMC)
-#define CONFIG_SYS_MMC_ENV_DEV		0	//0=SD3   1=SD4
+#define CONFIG_SYS_MMC_ENV_DEV		1	//0=SD3   1=SD4
 #endif
 
 #ifdef CONFIG_DEFAULT_FDT_FILE
@@ -74,17 +74,36 @@
 		"run netargs; " \
 		"tftp ${image}; " \
 		"tftp ${fdt_addr} ${fdt_file};" \
-		"bootz ${loadaddr} - ${fdt_addr}; \0"
-  
+		"bootz ${loadaddr} - ${fdt_addr}; \0" \
+	"development=0\0" \
+	"silentconsole=0\0" \
+	"loadaddrbin=0x11020000\0" \
+	"operativedir=/boot/\0" \
+	"operativeimg=img_dd1.boot\0" \
+	"ubootimg=u-boot.imx\0" \
+	"filemaxsize=0x100000\0" \
+	"updatebin=tftpboot ${loadaddrbin} ${serverip}:${operativeimg}; ext4write mmc ${mmcdev}:${mmcpart} ${loadaddrbin} ${operativedir}${operativeimg} ${filemaxsize}\0" \
+	"updateboot=tftpboot ${loadaddrbin} ${serverip}:${ubootimg}; mmc dev ${mmcdev}; mmc write ${loadaddrbin} 0x2 4000;\0" \
+	"maintimg=img_dd1.boot\0" \
+	"bootcmd_maint=tftpboot ${loadaddrbin} ${serverip}:${maintimg}; bootm ${loadaddrbin}\0" \
+	"bootcmd_oper=ext4load mmc ${mmcdev}:${mmcpart} ${loadaddrbin} ${operativedir}${operativeimg}; bootm ${loadaddrbin}\0" \
+	"bootcmd_operdev=tftpboot ${loadaddrbin} ${serverip}:${operativeimg}; bootm ${loadaddrbin}\0" \
+	"ipaddr=192.168.2.100\0" \
+	"serverip=192.168.2.101\0"
 
 #define CONFIG_BOOTCOMMAND \
   "mmc dev ${mmcdev};" \
   "run mmcboot; "
-  
-  
+
+/*BOOT.3*/
+#define INPUT_STAT_MAINT_SEL_CPU IMX_GPIO_NR(1, 0)
+/*BOOT.9*/
+#ifdef CONFIG_BOOTDELAY
+#undef CONFIG_BOOTDELAY
+#endif
+#define CONFIG_BOOTDELAY 1
+
 #define CONFIG_PHY_MARVELL
-#define CONFIG_IPADDR	192.168.1.100
-#define CONFIG_SERVERIP 192.168.1.101
 #define CONFIG_ETHADDR 00:11:22:00:11:22
 
 #endif                         /* __MX6QMARTA_CONFIG_H */

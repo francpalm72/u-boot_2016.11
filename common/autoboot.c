@@ -14,6 +14,8 @@
 #include <menu.h>
 #include <post.h>
 #include <u-boot/sha256.h>
+#include <asm/gpio.h>
+#include <asm/arch-imx/cpu.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -291,6 +293,9 @@ const char *bootdelay_process(void)
 {
 	char *s;
 	int bootdelay;
+	int developmentmode;
+	int maintenancemode;
+	u32 rc;
 #ifdef CONFIG_BOOTCOUNT_LIMIT
 	unsigned long bootcount = 0;
 	unsigned long bootlimit = 0;
@@ -304,9 +309,30 @@ const char *bootdelay_process(void)
 	bootlimit = getenv_ulong("bootlimit", 10, 0);
 #endif /* CONFIG_BOOTCOUNT_LIMIT */
 
+	//BOOT.3
+	//BOOT.6
+	//BOOT.9
+	//BOOT.17
+	s = getenv("development");
+	developmentmode = s ? (int)simple_strtol(s, NULL, 10) : 0;
+	maintenancemode = gpio_get_value(INPUT_STAT_MAINT_SEL_CPU);
+	printf ("developmentmode=%d\n", developmentmode);
+	printf ("maintenancemode=%d\n", maintenancemode);
+	
 	s = getenv("bootdelay");
-	bootdelay = s ? (int)simple_strtol(s, NULL, 10) : CONFIG_BOOTDELAY;
-
+	
+	//BOOT.6
+	//BOOT.9
+	//BOOT.17
+	//Se non sono in maintenance e non sono in development il bootdelay deve essere 0
+	if((maintenancemode == 0) && (developmentmode == 0)){
+		bootdelay = 0;
+	}
+	//In modalità maintenance il bootdelay sarà quello della variabile bootdelay oppure CONFIG_BOOTDELAY
+	else{
+		bootdelay = s ? (int)simple_strtol(s, NULL, 10) : CONFIG_BOOTDELAY;
+	}
+	
 #ifdef CONFIG_OF_CONTROL
 	bootdelay = fdtdec_get_config_int(gd->fdt_blob, "bootdelay",
 			bootdelay);
@@ -331,7 +357,32 @@ const char *bootdelay_process(void)
 		s = getenv("altbootcmd");
 	} else
 #endif /* CONFIG_BOOTCOUNT_LIMIT */
-		s = getenv("bootcmd");
+
+	//BOOT.7
+	//BOOT.17
+	rc = get_imx_reset_cause();
+	printf ("RESET Cause = %d\n", rc);
+	
+	//Se sono in maintenance mode
+	if(maintenancemode == 1){
+		s = getenv ("bootcmd_maint");
+	}
+	//Se sono in operative mode
+	else{
+		if(developmentmode == 0){
+			if((rc == 0x01) || (rc == 0x11)){
+				s = getenv ("bootcmd_oper");
+			}
+			else{
+				printf ("RESET not from PowerOn, stop boot\n");
+				s = NULL;
+			}
+		}
+		else{
+			s = getenv ("bootcmd_operdev");
+		}
+	}	
+	//s = getenv("bootcmd");
 
 	process_fdt_options(gd->fdt_blob);
 	stored_bootdelay = bootdelay;

@@ -25,6 +25,10 @@ typedef volatile unsigned char	vu_char;
 #include <asm/ptrace.h>
 #include <stdarg.h>
 #include <linux/kernel.h>
+
+/*BOOT.12*/
+extern u32 flag_reset_cause;
+
 #if defined(CONFIG_PCI) && defined(CONFIG_4xx)
 #include <pci.h>
 #endif
