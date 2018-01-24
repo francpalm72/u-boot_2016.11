@@ -75,33 +75,70 @@
 		"tftp ${image}; " \
 		"tftp ${fdt_addr} ${fdt_file};" \
 		"bootz ${loadaddr} - ${fdt_addr}; \0" \
+	"ipaddr=192.168.2.100\0" \
+	"serverip=192.168.2.101\0" \
 	"development=0\0" \
 	"silentconsole=0\0" \
+	"loadaddrmd5=0x11018000\0" \
 	"loadaddrbin=0x11020000\0" \
 	"operativedir=/boot/\0" \
 	"operativeimg=img_dd1.boot\0" \
-	"ubootimg=u-boot.imx\0" \
-	"filemaxsize=0x100000\0" \
-	"updatebin=tftpboot ${loadaddrbin} ${serverip}:${operativeimg}; ext4write mmc ${mmcdev}:${mmcpart} ${loadaddrbin} ${operativedir}${operativeimg} ${filemaxsize}\0" \
-	"updateboot=tftpboot ${loadaddrbin} ${serverip}:${ubootimg}; mmc dev ${mmcdev}; mmc write ${loadaddrbin} 0x2 4000;\0" \
+	"operativeimgmd5=img_dd1.md5\0" \
 	"maintimg=img_dd1.boot\0" \
+	"ubootimg=u-boot.imx\0" \
+	"updatebin=tftpboot ${loadaddrmd5} ${serverip}:${operativeimgmd5}; " \
+			"if test ${filesize} = 10; then " \
+				"tftpboot ${loadaddrbin} ${serverip}:${operativeimg}; " \
+				"if test md5sum -v ${loadaddrbin} ${filesize} *${loadaddrmd5}; then " \
+					"echo md5sum check OK; " \
+					"ext4write mmc ${mmcdev}:${mmcpart} ${loadaddrbin} ${operativedir}${operativeimg} ${filesize}; " \
+					"ext4write mmc ${mmcdev}:${mmcpart} ${loadaddrmd5} ${operativedir}${operativeimgmd5} 10; " \
+				"else " \
+					"echo md5sum check FAILED: ; " \
+					"md5sum ${loadaddrbin} ${filesize}; " \
+				"fi; " \
+			"else " \
+				"echo md5 file error length; " \
+				"echo ${filesize}; " \
+			"fi; \0" \
+	"updateboot=tftpboot ${loadaddrbin} ${serverip}:${ubootimg}; " \
+			"mmc dev ${mmcdev}; " \
+			"mmc write ${loadaddrbin} 0x2 4000;\0" \
 	"bootcmd_maint=tftpboot ${loadaddrbin} ${serverip}:${maintimg}; bootm ${loadaddrbin}\0" \
-	"bootcmd_oper=ext4load mmc ${mmcdev}:${mmcpart} ${loadaddrbin} ${operativedir}${operativeimg}; bootm ${loadaddrbin}\0" \
 	"bootcmd_operdev=tftpboot ${loadaddrbin} ${serverip}:${operativeimg}; bootm ${loadaddrbin}\0" \
-	"ipaddr=192.168.2.100\0" \
-	"serverip=192.168.2.101\0"
+	"bootcmd_oper=ext4load mmc ${mmcdev}:${mmcpart} ${loadaddrmd5} ${operativedir}${operativeimgmd5}; " \
+			"if test ${filesize} = 10; then " \
+				"ext4load mmc ${mmcdev}:${mmcpart} ${loadaddrbin} ${operativedir}${operativeimg}; " \
+				"if test md5sum -v ${loadaddrbin} ${filesize} *${loadaddrmd5}; then " \
+					"echo md5sum check OK; " \
+					"bootm ${loadaddrbin}; " \
+				"else " \
+					"echo md5sum check FAILED: ; " \
+					"md5sum ${loadaddrbin} ${filesize}; " \
+				"fi; " \
+			"else " \
+				"echo md5 file error length; " \
+				"echo ${filesize}; " \
+			"fi; \0" \
+	
+	
+	
 
 #define CONFIG_BOOTCOMMAND \
   "mmc dev ${mmcdev};" \
   "run mmcboot; "
 
 /*BOOT.3*/
-#define INPUT_STAT_MAINT_SEL_CPU IMX_GPIO_NR(1, 0)
+#define INPUT_STAT_MAINT_SEL_CPU IMX_GPIO_NR(1, 0)	//GPIO_0__GPIO1_IO00 T5 MAINT_SEL_CPU
 /*BOOT.9*/
 #ifdef CONFIG_BOOTDELAY
 #undef CONFIG_BOOTDELAY
 #endif
 #define CONFIG_BOOTDELAY 1
+
+#define CONFIG_MD5
+#define CONFIG_MD5SUM_VERIFY
+#define CONFIG_CMD_MD5SUM
 
 #define CONFIG_PHY_MARVELL
 #define CONFIG_ETHADDR 00:11:22:00:11:22

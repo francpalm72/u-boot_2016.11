@@ -333,6 +333,7 @@ static void boot_jump_linux(bootm_headers_t *images, int flag)
 							  0, machid, r2);
 		} else
 #endif
+		/*BOOT.5*/
 		gpio_set_value(IMX_GPIO_NR(4, 5), 1);	//GPIO_19__GPIO4_IO05  P5  IMX6_SPARE_LED
 		kernel_entry(0, machid, r2);
 	}

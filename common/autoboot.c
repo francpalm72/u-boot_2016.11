@@ -295,7 +295,7 @@ const char *bootdelay_process(void)
 	int bootdelay;
 	int developmentmode;
 	int maintenancemode;
-	u32 rc;
+	u32 resetcause;
 #ifdef CONFIG_BOOTCOUNT_LIMIT
 	unsigned long bootcount = 0;
 	unsigned long bootlimit = 0;
@@ -328,7 +328,8 @@ const char *bootdelay_process(void)
 	if((maintenancemode == 0) && (developmentmode == 0)){
 		bootdelay = 0;
 	}
-	//In modalità maintenance il bootdelay sarà quello della variabile bootdelay oppure CONFIG_BOOTDELAY
+	//In modalità maintenance oppure operativa development il bootdelay sarà quello della variabile 
+	//bootdelay oppure CONFIG_BOOTDELAY
 	else{
 		bootdelay = s ? (int)simple_strtol(s, NULL, 10) : CONFIG_BOOTDELAY;
 	}
@@ -358,11 +359,12 @@ const char *bootdelay_process(void)
 	} else
 #endif /* CONFIG_BOOTCOUNT_LIMIT */
 
-	//BOOT.7
-	//BOOT.17
-	rc = get_imx_reset_cause();
-	printf ("RESET Cause = %d\n", rc);
 	
+	//BOOT.12
+	resetcause = get_imx_reset_cause();
+	printf ("RESET Cause = %d\n", resetcause);
+	
+	//BOOT.7
 	//Se sono in maintenance mode
 	if(maintenancemode == 1){
 		s = getenv ("bootcmd_maint");
@@ -370,7 +372,7 @@ const char *bootdelay_process(void)
 	//Se sono in operative mode
 	else{
 		if(developmentmode == 0){
-			if((rc == 0x01) || (rc == 0x11)){
+			if((resetcause == 0x01) || (resetcause == 0x11)){
 				s = getenv ("bootcmd_oper");
 			}
 			else{
