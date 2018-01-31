@@ -176,61 +176,69 @@ int print_cpuinfo(void)
 	__maybe_unused u32 max_freq;
 
 	cpurev = get_cpu_rev();
-
+	
 #if defined(CONFIG_IMX_THERMAL)
 	struct udevice *thermal_dev;
 	int cpu_tmp, minc, maxc, ret;
+	
+	get_imx_type((cpurev & 0xFF000) >> 12);
+//	printf("CPU:   Freescale i.MX%s rev%d.%d",
+//		   get_imx_type((cpurev & 0xFF000) >> 12),
+//		   (cpurev & 0x000F0) >> 4,
+//		   (cpurev & 0x0000F) >> 0);
 
-	printf("CPU:   Freescale i.MX%s rev%d.%d",
-	       get_imx_type((cpurev & 0xFF000) >> 12),
-	       (cpurev & 0x000F0) >> 4,
-	       (cpurev & 0x0000F) >> 0);
 	max_freq = get_cpu_speed_grade_hz();
 	if (!max_freq || max_freq == mxc_get_clock(MXC_ARM_CLK)) {
-		printf(" at %dMHz\n", mxc_get_clock(MXC_ARM_CLK) / 1000000);
+		mxc_get_clock(MXC_ARM_CLK);
+//		printf(" at %dMHz\n", mxc_get_clock(MXC_ARM_CLK) / 1000000);
 	} else {
-		printf(" %d MHz (running at %d MHz)\n", max_freq / 1000000,
-		       mxc_get_clock(MXC_ARM_CLK) / 1000000);
+		mxc_get_clock(MXC_ARM_CLK);
+//		printf(" %d MHz (running at %d MHz)\n", max_freq / 1000000,
+//			   mxc_get_clock(MXC_ARM_CLK) / 1000000);
 	}
 #else
-	printf("CPU:   Freescale i.MX%s rev%d.%d at %d MHz\n",
-		get_imx_type((cpurev & 0xFF000) >> 12),
-		(cpurev & 0x000F0) >> 4,
-		(cpurev & 0x0000F) >> 0,
-		mxc_get_clock(MXC_ARM_CLK) / 1000000);
+	get_imx_type((cpurev & 0xFF000) >> 12);
+//	printf("CPU:   Freescale i.MX%s rev%d.%d at %d MHz\n",
+//		get_imx_type((cpurev & 0xFF000) >> 12),
+//		(cpurev & 0x000F0) >> 4,
+//		(cpurev & 0x0000F) >> 0,
+//		mxc_get_clock(MXC_ARM_CLK) / 1000000);
 #endif
 
 #if defined(CONFIG_IMX_THERMAL)
-	puts("CPU:   ");
+//	puts("CPU:   ");
 	switch (get_cpu_temp_grade(&minc, &maxc)) {
 	case TEMP_AUTOMOTIVE:
-		puts("Automotive temperature grade ");
+//		puts("Automotive temperature grade ");
 		break;
 	case TEMP_INDUSTRIAL:
-		puts("Industrial temperature grade ");
+//		puts("Industrial temperature grade ");
 		break;
 	case TEMP_EXTCOMMERCIAL:
-		puts("Extended Commercial temperature grade ");
+//		puts("Extended Commercial temperature grade ");
 		break;
 	default:
-		puts("Commercial temperature grade ");
+//		puts("Commercial temperature grade ");
 		break;
 	}
-	printf("(%dC to %dC)", minc, maxc);
+//	printf("(%dC to %dC)", minc, maxc);
 	ret = uclass_get_device(UCLASS_THERMAL, 0, &thermal_dev);
 	if (!ret) {
 		ret = thermal_get_temp(thermal_dev, &cpu_tmp);
 
-		if (!ret)
-			printf(" at %dC\n", cpu_tmp);
-		else
+		if (!ret){
+//			printf(" at %dC\n", cpu_tmp);
+		}
+		else{
 			debug(" - invalid sensor data\n");
+		}
 	} else {
 		debug(" - invalid sensor device\n");
 	}
 #endif
-
-	printf("Reset cause: %s\n", get_reset_cause());
+	get_reset_cause();
+//	printf("Reset cause: %s\n", get_reset_cause());
+	
 	return 0;
 }
 #endif

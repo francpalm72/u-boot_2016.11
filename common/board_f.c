@@ -176,7 +176,7 @@ static int display_text_info(void)
 
 static int announce_dram_init(void)
 {
-	puts("DRAM:  ");
+//	puts("DRAM:  ");
 	return 0;
 }
 
@@ -220,9 +220,9 @@ static int show_dram_config(void)
 	size = gd->ram_size;
 #endif
 
-	print_size(size, "");
+//	print_size(size, "");
 	board_add_ram_info(0);
-	putc('\n');
+//	putc('\n');
 
 	return 0;
 }
@@ -959,7 +959,7 @@ static init_fnc_t init_sequence_f[] = {
 	testdram,
 #endif /* CONFIG_SYS_DRAM_TEST */
 	INIT_FUNC_WATCHDOG_RESET
-
+	
 #ifdef CONFIG_POST
 	init_post,
 #endif

@@ -78,7 +78,6 @@
 	"ipaddr=192.168.2.100\0" \
 	"serverip=192.168.2.101\0" \
 	"development=0\0" \
-	"silentconsole=0\0" \
 	"loadaddrmd50=0x11018000\0" \
 	"loadaddrmd51=0x11018004\0" \
 	"loadaddrmd52=0x11018008\0" \
@@ -90,10 +89,9 @@
 	"loadaddrbin=0x11020000\0" \
 	"operativedir=/boot/\0" \
 	"operativeimg=img_dd1.boot\0" \
-	"operativeimgmd5=img_dd1.md5\0" \
 	"maintimg=img_dd1.boot\0" \
 	"ubootimg=u-boot.imx\0" \
-	"updatebin=setenv filesize 0; tftpboot ${loadaddrmd50} ${serverip}:${operativeimgmd5}; " \
+	"updatebin=setenv filesize 0; tftpboot ${loadaddrmd50} ${serverip}:${operativeimg}.md5; " \
 			"if test ${filesize} = 10; then " \
 				"setenv filesize 0; tftpboot ${loadaddrbin} ${serverip}:${operativeimg}; " \
 				"md5sum ${loadaddrbin} ${filesize} *${calcaddrmd50}; " \
@@ -105,7 +103,7 @@
 				"if test $md5ok = OK; then " \
 					"echo MD5SUM VERIFY OK!; " \
 					"ext4write mmc ${mmcdev}:${mmcpart} ${loadaddrbin} ${operativedir}${operativeimg} ${filesize}; " \
-					"ext4write mmc ${mmcdev}:${mmcpart} ${loadaddrmd50} ${operativedir}${operativeimgmd5} 10; " \
+					"ext4write mmc ${mmcdev}:${mmcpart} ${loadaddrmd50} ${operativedir}${operativeimg}.md5 10; " \
 					"echo PROCEDURE COMPLETED! NOW YOU CAN REBOOT!; " \
 				"else " \
 					"echo MD5SUM VERIFY FAILED!; " \
@@ -115,12 +113,17 @@
 				"echo MD5 FILE LENGTH ERROR; " \
 			"fi; \0" \
 	"updateboot=tftpboot ${loadaddrbin} ${serverip}:${ubootimg}; " \
+			"setexpr fw_sz ${filesize} / 0x200; " \
+			"setexpr fw_sz ${fw_sz} + 1; "	\
 			"mmc dev ${mmcdev}; " \
-			"mmc write ${loadaddrbin} 0x2 4000;\0" \
+			"mmc write ${loadaddrbin} 0x2 ${fw_sz}; " \
+			"mw.b ${loadaddrbin} 0xff 0x2000; " \
+			"mmc write ${loadaddrbin} 0x600 0x10; " \
+			"reset; \0" \
 	"bootcmd_maint=tftpboot ${loadaddrbin} ${serverip}:${maintimg}; bootm ${loadaddrbin}\0" \
 	"bootcmd_operdev=tftpboot ${loadaddrbin} ${serverip}:${operativeimg}; bootm ${loadaddrbin}\0" \
 	"bootcmd_oper=setenv filesize 0; " \
-			"ext4load mmc ${mmcdev}:${mmcpart} ${loadaddrmd50} ${operativedir}${operativeimgmd5}; " \
+			"ext4load mmc ${mmcdev}:${mmcpart} ${loadaddrmd50} ${operativedir}${operativeimg}.md5; " \
 			"if test ${filesize} = 10; then " \
 				"setenv filesize 0; " \
 				"ext4load mmc ${mmcdev}:${mmcpart} ${loadaddrbin} ${operativedir}${operativeimg}; " \
@@ -131,7 +134,6 @@
 				"if itest *${loadaddrmd52} != *${calcaddrmd52}; then setenv md5ok NOK; fi; " \
 				"if itest *${loadaddrmd53} != *${calcaddrmd53}; then setenv md5ok NOK; fi; " \
 				"if test $md5ok = OK; then " \
-					"echo MD5SUM VERIFY OK!; " \
 					"bootm ${loadaddrbin}; " \
 				"else " \
 					"echo MD5SUM VERIFY FAILED!; " \

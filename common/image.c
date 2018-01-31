@@ -335,6 +335,7 @@ void image_print_contents(const void *ptr)
 		printf("%sCreated:      ", p);
 		genimg_print_time((time_t)image_get_time(hdr));
 	}
+	
 	printf("%sImage Type:   ", p);
 	image_print_type(hdr);
 	printf("%sData Size:    ", p);
@@ -406,16 +407,23 @@ static const image_header_t *image_get_ramdisk(ulong rd_addr, uint8_t arch,
 	}
 
 	bootstage_mark(BOOTSTAGE_ID_RD_MAGIC);
+	
+	
 	image_print_contents(rd_hdr);
-
+	
+	
 	if (verify) {
+		
 		puts("   Verifying Checksum ... ");
+		
 		if (!image_check_dcrc(rd_hdr)) {
 			puts("Bad Data CRC\n");
 			bootstage_error(BOOTSTAGE_ID_RD_CHECKSUM);
 			return NULL;
 		}
-		puts("OK\n");
+		if(getenv("silentconsole") == NULL){
+			puts("OK\n");
+		}
 	}
 
 	bootstage_mark(BOOTSTAGE_ID_RD_HDR_CHECKSUM);

@@ -454,7 +454,7 @@ static int initr_onenand(void)
 #ifdef CONFIG_GENERIC_MMC
 static int initr_mmc(void)
 {
-	puts("MMC:   ");
+//	puts("MMC:   ");
 	mmc_initialize(gd->bd);
 	return 0;
 }
@@ -650,7 +650,7 @@ static int initr_bbmii(void)
 #ifdef CONFIG_CMD_NET
 static int initr_net(void)
 {
-	puts("Net:   ");
+	//puts("Net:   ");
 	eth_initialize();
 #if defined(CONFIG_RESET_PHY_R)
 	debug("Reset Ethernet PHY\n");

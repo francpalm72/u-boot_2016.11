@@ -32,6 +32,7 @@
 #include <power/pfuze100_pmic.h>
 #include "../common/pfuze.h"
 #include <exports.h>
+#include <version.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -66,7 +67,7 @@ DECLARE_GLOBAL_DATA_PTR;
 int dram_init(void)
 {
 	gd->ram_size = imx_ddr_size();
-
+	
 	return 0;
 }
 
@@ -459,7 +460,8 @@ int board_eth_init(bd_t *bis)
 		return 0;
 	}
 
-	printf("using phy at: %d\n", phydev->addr);
+	//printf("%s\n", phydev->drv->name);
+	//printf("using phy at: %d\n", phydev->addr);
 	
 	ret  = fec_probe(bis, -1, base, bus, phydev);
 	if (ret) {
@@ -468,9 +470,9 @@ int board_eth_init(bd_t *bis)
 		free(bus);
 	}
 
-	printf("phy dev id: %X\n", phydev->phy_id);
-	printf("phy drv name: %s\n", phydev->drv->name);
-	printf("phy dev speed: %d\n", phydev->speed);
+	//printf("phy dev id: %X\n", phydev->phy_id);
+	//printf("phy drv name: %s\n", phydev->drv->name);
+	//printf("phy dev speed: %d\n", phydev->speed);
 
 
 #endif
@@ -845,14 +847,16 @@ int board_late_init(void)
 #endif
 
 #ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
-	setenv("board_name", "MX6QMARTA");
-
-	if (is_mx6dqp())
-		setenv("board_rev", "MX6QP");
-	else if (is_mx6dq())
-		setenv("board_rev", "MX6Q");
-	else if (is_mx6sdl())
-		setenv("board_rev", "MX6DL");
+	
+	setenv("boot_name", "U-Boot 2106.11 P/N:16100012345.02");
+	setenv("boot_build", U_BOOT_VERSION_STRING);
+	
+	//if (is_mx6dqp())
+	//	setenv("board_rev", "MX6QP");
+	//else if (is_mx6dq())
+	//	setenv("board_rev", "MX6Q");
+	//else if (is_mx6sdl())
+	//	setenv("board_rev", "MX6DL");
 #endif
 
 	return 0;
@@ -860,20 +864,22 @@ int board_late_init(void)
 
 int checkboard(void)
 {
-	int rev = mx6sabre_rev();
-	char *revname;
+	//int rev = mx6sabre_rev();
+	//char *revname;
 
-	switch (rev) {
-	case BOARD_REV_B:
-		revname = "B";
-		break;
-	case BOARD_REV_A:
-	default:
-		revname = "A";
-		break;
-	}
+	//switch (rev) {
+	//case BOARD_REV_B:
+	//	revname = "B";
+	//	break;
+	//case BOARD_REV_A:
+	//	revname = "B";
+	//	break;
+	//default:
+	//	revname = "X";
+	//	break;
+	//}
 
-	printf("Board: MX6Q-Marte SD4 DD1 rev%s\n", revname);
+	//printf("Board: MX6Q-Marte SD4 DD1 rev%s\n", revname);
 
 	return 0;
 }

@@ -73,8 +73,10 @@ void arch_lmb_reserve(struct lmb *lmb)
 static void announce_and_cleanup(int fake)
 {
 
-	printf("\nStarting kernel ...%s\n\n", fake ?
-		"(fake run for tracing)" : "");
+	if(getenv("silentconsole") == NULL){
+		printf("\nStarting kernel ...%s\n\n", fake ?
+			"(fake run for tracing)" : "");
+	}
 	bootstage_mark_name(BOOTSTAGE_ID_BOOTM_HANDOFF, "start_kernel");
 #ifdef CONFIG_BOOTSTAGE_FDT
 	bootstage_fdt_add_report();

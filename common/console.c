@@ -714,6 +714,7 @@ int console_init_f(void)
 void stdio_print_current_devices(void)
 {
 	/* Print information */
+/*
 	puts("In:    ");
 	if (stdio_devices[stdin] == NULL) {
 		puts("No input devices available!\n");
@@ -734,6 +735,7 @@ void stdio_print_current_devices(void)
 	} else {
 		printf ("%s\n", stdio_devices[stderr]->name);
 	}
+*/
 }
 
 #ifdef CONFIG_SYS_CONSOLE_IS_IN_ENV

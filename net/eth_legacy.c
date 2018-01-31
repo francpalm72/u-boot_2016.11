@@ -268,11 +268,11 @@ int eth_initialize(void)
 			if (dev->index)
 				puts(", ");
 
-			printf("%s", dev->name);
+//			printf("%s", dev->name);
 
 			if (ethprime && strcmp(dev->name, ethprime) == 0) {
 				eth_current = dev;
-				puts(" [PRIME]");
+//				puts(" [PRIME]");
 			}
 
 			if (strchr(dev->name, ' '))

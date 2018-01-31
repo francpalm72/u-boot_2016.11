@@ -218,7 +218,9 @@ static int __abortboot(int bootdelay)
 #ifdef CONFIG_MENUPROMPT
 	printf(CONFIG_MENUPROMPT);
 #else
-	printf("Hit any key to stop autoboot: %2d ", bootdelay);
+	if(bootdelay>0){
+		printf("Hit any key to stop autoboot: %2d ", bootdelay);
+	}   
 #endif
 
 	/*
@@ -296,6 +298,7 @@ const char *bootdelay_process(void)
 	int developmentmode;
 	int maintenancemode;
 	u32 resetcause;
+	
 #ifdef CONFIG_BOOTCOUNT_LIMIT
 	unsigned long bootcount = 0;
 	unsigned long bootlimit = 0;
@@ -309,6 +312,8 @@ const char *bootdelay_process(void)
 	bootlimit = getenv_ulong("bootlimit", 10, 0);
 #endif /* CONFIG_BOOTCOUNT_LIMIT */
 
+	
+	
 	//BOOT.3
 	//BOOT.6
 	//BOOT.9
@@ -316,8 +321,8 @@ const char *bootdelay_process(void)
 	s = getenv("development");
 	developmentmode = s ? (int)simple_strtol(s, NULL, 10) : 0;
 	maintenancemode = gpio_get_value(INPUT_STAT_MAINT_SEL_CPU);
-	printf ("developmentmode=%d\n", developmentmode);
-	printf ("maintenancemode=%d\n", maintenancemode);
+	
+	
 	
 	s = getenv("bootdelay");
 	
@@ -326,6 +331,7 @@ const char *bootdelay_process(void)
 	//BOOT.17
 	//Se non sono in maintenance e non sono in development il bootdelay deve essere 0
 	if((maintenancemode == 0) && (developmentmode == 0)){
+		setenv("silentconsole", "1");
 		bootdelay = 0;
 	}
 	//In modalità maintenance oppure operativa development il bootdelay sarà quello della variabile 
@@ -359,10 +365,54 @@ const char *bootdelay_process(void)
 	} else
 #endif /* CONFIG_BOOTCOUNT_LIMIT */
 
-	
 	//BOOT.12
 	resetcause = get_imx_reset_cause();
-	printf ("RESET Cause = %d\n", resetcause);
+		
+	//BOOT.16
+	if(getenv("silentconsole") == NULL){
+		s = getenv("boot_name");
+		printf("BOOT_NAME:   %s\n", s);
+		s = getenv("boot_build");
+		printf("BOOT_BUILD:  %s\n", s);
+		printf ("DEVELOPMENT_MODE: %d\n", developmentmode);
+		printf ("MAINTENANCE_MODE: %d\n", maintenancemode);
+	
+		switch (resetcause) {
+			case 0x00001:
+			case 0x00011:
+				printf ("RESET_CAUSE: POR\n");
+				break;
+			case 0x00004:
+				printf ("RESET_CAUSE: CSU\n");
+				break;
+			case 0x00008:
+				printf ("RESET_CAUSE: IPP USER\n");
+				break;
+			case 0x00010:
+				printf ("RESET_CAUSE: WDOG\n");
+				break;
+			case 0x00020:
+				printf ("RESET_CAUSE: JTAG HIGH-Z\n");
+				break;
+			case 0x00040:
+				printf ("RESET_CAUSE: JTAG SW\n");
+				break;
+			case 0x00080:
+				printf ("RESET_CAUSE: WDOG3\n");
+				break;
+			case 0x00100:
+				printf ("RESET_CAUSE: TEMPSENSE\n");
+				break;
+			case 0x10000:
+				printf ("RESET_CAUSE: WARM BOOT\n");
+				break;
+			default:
+				printf ("RESET_CAUSE: UNKNOWN\n");
+				break;
+		}
+	}
+	
+	
 	
 	//BOOT.7
 	//Se sono in maintenance mode
@@ -376,14 +426,15 @@ const char *bootdelay_process(void)
 				s = getenv ("bootcmd_oper");
 			}
 			else{
-				printf ("RESET not from PowerOn, stop boot\n");
+				printf ("NOT PowerOnReset, STOP BOOT\n");
 				s = NULL;
 			}
 		}
 		else{
 			s = getenv ("bootcmd_operdev");
 		}
-	}	
+	}
+	
 	//s = getenv("bootcmd");
 
 	process_fdt_options(gd->fdt_blob);

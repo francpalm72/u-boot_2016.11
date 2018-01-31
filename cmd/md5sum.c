@@ -104,10 +104,13 @@ int do_md5sum(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	unmap_sysmem(buf);
 
 	if (!verify) {
-		printf("md5 for %08lx ... %08lx ==> ", addr, addr + len - 1);
-		for (i = 0; i < 16; i++)
-			printf("%02x", output[i]);
-		printf("\n");
+		if(getenv("silentconsole") == NULL){
+			printf("md5 for %08lx ... %08lx ==> ", addr, addr + len - 1);
+			for (i = 0; i < 16; i++)
+				printf("%02x", output[i]);
+			printf("\n");			
+		}
+
 
 		if (ac > 2)
 			store_result(output, *av);
@@ -152,10 +155,12 @@ static int do_md5sum(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	md5_wd(buf, len, output, CHUNKSZ_MD5);
 	unmap_sysmem(buf);
 
-	printf("md5 for %08lx ... %08lx ==> ", addr, addr + len - 1);
-	for (i = 0; i < 16; i++)
-		printf("%02x", output[i]);
-	printf("\n");
+	if(getenv("silentconsole") == NULL){
+		printf("md5 for %08lx ... %08lx ==> ", addr, addr + len - 1);
+		for (i = 0; i < 16; i++)
+			printf("%02x", output[i]);
+		printf("\n");		
+	}
 
 	if (argc > 3)
 		store_result(output, argv[3]);
