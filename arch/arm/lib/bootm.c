@@ -72,8 +72,8 @@ void arch_lmb_reserve(struct lmb *lmb)
  */
 static void announce_and_cleanup(int fake)
 {
-
-	if(getenv("silentconsole") == NULL){
+	//BOOT.16
+	if(getenv("slntcnsl") == NULL){
 		printf("\nStarting kernel ...%s\n\n", fake ?
 			"(fake run for tracing)" : "");
 	}

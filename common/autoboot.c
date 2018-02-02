@@ -297,6 +297,7 @@ const char *bootdelay_process(void)
 	int bootdelay;
 	int developmentmode;
 	int maintenancemode;
+	int slntcnsl;
 	u32 resetcause;
 	
 #ifdef CONFIG_BOOTCOUNT_LIMIT
@@ -322,7 +323,16 @@ const char *bootdelay_process(void)
 	developmentmode = s ? (int)simple_strtol(s, NULL, 10) : 0;
 	maintenancemode = gpio_get_value(INPUT_STAT_MAINT_SEL_CPU);
 	
-	
+	//BOOT.16
+	//BOOT.23
+	//se sono in operativo puro setto la variabile slntcnsl
+	s = getenv("silentconsole");
+	slntcnsl = s ? (int)simple_strtol(s, NULL, 10) : 0;
+	if((maintenancemode == 0) && (developmentmode == 0)){
+		if(slntcnsl == 1){
+			setenv("slntcnsl", "1");
+		}
+	}
 	
 	s = getenv("bootdelay");
 	
@@ -331,7 +341,6 @@ const char *bootdelay_process(void)
 	//BOOT.17
 	//Se non sono in maintenance e non sono in development il bootdelay deve essere 0
 	if((maintenancemode == 0) && (developmentmode == 0)){
-		setenv("silentconsole", "1");
 		bootdelay = 0;
 	}
 	//In modalità maintenance oppure operativa development il bootdelay sarà quello della variabile 
@@ -369,9 +378,9 @@ const char *bootdelay_process(void)
 	resetcause = get_imx_reset_cause();
 		
 	//BOOT.16
-	if(getenv("silentconsole") == NULL){
-		s = getenv("boot_name");
-		printf("BOOT_NAME:   %s\n", s);
+	if(getenv("slntcnsl") == NULL){
+		s = getenv("boot_version");
+		printf("BOOT_VERSION:   %s\n", s);
 		s = getenv("boot_build");
 		printf("BOOT_BUILD:  %s\n", s);
 		printf ("DEVELOPMENT_MODE: %d\n", developmentmode);

@@ -75,9 +75,10 @@
 		"tftp ${image}; " \
 		"tftp ${fdt_addr} ${fdt_file};" \
 		"bootz ${loadaddr} - ${fdt_addr}; \0" \
-	"ipaddr=192.168.2.100\0" \
-	"serverip=192.168.2.101\0" \
+	"ipaddr=192.168.1.9\0" \
+	"serverip=192.168.1.10\0" \
 	"development=0\0" \
+	"silentconsole=0\0" \
 	"loadaddrmd50=0x11018000\0" \
 	"loadaddrmd51=0x11018004\0" \
 	"loadaddrmd52=0x11018008\0" \
@@ -88,8 +89,8 @@
 	"calcaddrmd53=0x1101801C\0" \
 	"loadaddrbin=0x11020000\0" \
 	"operativedir=/boot/\0" \
-	"operativeimg=img_dd1.boot\0" \
-	"maintimg=img_dd1.boot\0" \
+	"operativeimg=img.boot\0" \
+	"maintimg=maint.boot\0" \
 	"ubootimg=u-boot.imx\0" \
 	"updatebin=setenv filesize 0; tftpboot ${loadaddrmd50} ${serverip}:${operativeimg}.md5; " \
 			"if test ${filesize} = 10; then " \

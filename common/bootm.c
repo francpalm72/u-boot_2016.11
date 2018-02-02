@@ -344,7 +344,8 @@ int bootm_decomp_image(int comp, ulong load, ulong image_start, int type,
 	int ret = 0;
 
 	*load_end = load;
-	if(getenv("silentconsole") == NULL){
+	//BOOT.16
+	if(getenv("slntcnsl") == NULL){
 		print_decomp_msg(comp, type, load == image_start);
 	}
 	/*
@@ -420,7 +421,8 @@ int bootm_decomp_image(int comp, ulong load, ulong image_start, int type,
 		return handle_decomp_error(comp, image_len, unc_len, ret);
 	*load_end = load + image_len;
 
-	if(getenv("silentconsole") == NULL){
+	//BOOT.16
+	if(getenv("slntcnsl") == NULL){
 		puts("OK\n");
 	}
 	return 0;
@@ -758,11 +760,13 @@ static image_header_t *image_get_kernel(ulong img_addr, int verify)
 
 	bootstage_mark(BOOTSTAGE_ID_CHECK_CHECKSUM);
 	
-	if(getenv("silentconsole") == NULL){
+	//BOOT.16
+	if(getenv("slntcnsl") == NULL){
 		image_print_contents(hdr);
 	}
 	if (verify) {
-		if(getenv("silentconsole") == NULL){
+		//BOOT.16
+		if(getenv("slntcnsl") == NULL){
 			puts("   Verifying Checksum ... ");
 		}
 		if (!image_check_dcrc(hdr)) {
@@ -770,7 +774,8 @@ static image_header_t *image_get_kernel(ulong img_addr, int verify)
 			bootstage_error(BOOTSTAGE_ID_CHECK_CHECKSUM);
 			return NULL;
 		}
-		if(getenv("silentconsole") == NULL){
+		//BOOT.16
+		if(getenv("slntcnsl") == NULL){
 			puts("OK\n");
 		}
 	}
@@ -827,7 +832,8 @@ static const void *boot_get_kernel(cmd_tbl_t *cmdtp, int flag, int argc,
 	switch (genimg_get_format(buf)) {
 #if defined(CONFIG_IMAGE_FORMAT_LEGACY)
 	case IMAGE_FORMAT_LEGACY:
-		if(getenv("silentconsole") == NULL){
+		//BOOT.16
+		if(getenv("slntcnsl") == NULL){
 			printf("## Booting kernel from Legacy Image at %08lx ...\n", img_addr);
 		}
 		hdr = image_get_kernel(img_addr, images->verify);

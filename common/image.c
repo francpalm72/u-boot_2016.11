@@ -421,7 +421,9 @@ static const image_header_t *image_get_ramdisk(ulong rd_addr, uint8_t arch,
 			bootstage_error(BOOTSTAGE_ID_RD_CHECKSUM);
 			return NULL;
 		}
-		if(getenv("silentconsole") == NULL){
+		
+		//BOOT.16
+		if(getenv("slntcnsl") == NULL){
 			puts("OK\n");
 		}
 	}

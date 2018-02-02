@@ -104,7 +104,8 @@ int do_md5sum(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	unmap_sysmem(buf);
 
 	if (!verify) {
-		if(getenv("silentconsole") == NULL){
+		//BOOT.16
+		if(getenv("slntcnsl") == NULL){
 			printf("md5 for %08lx ... %08lx ==> ", addr, addr + len - 1);
 			for (i = 0; i < 16; i++)
 				printf("%02x", output[i]);
@@ -155,7 +156,8 @@ static int do_md5sum(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	md5_wd(buf, len, output, CHUNKSZ_MD5);
 	unmap_sysmem(buf);
 
-	if(getenv("silentconsole") == NULL){
+	//BOOT.16
+	if(getenv("slntcnsl") == NULL){
 		printf("md5 for %08lx ... %08lx ==> ", addr, addr + len - 1);
 		for (i = 0; i < 16; i++)
 			printf("%02x", output[i]);
