@@ -54,7 +54,8 @@
 	"mmcroot=" CONFIG_MMCROOT " ro rootwait lpj=7905280 quiet\0" \
 	"mmcautodetect=yes\0" \
 	"mmcargs=setenv bootargs console=${console},${baudrate} root=${mmcroot} \0" \
-	"netargs=setenv bootargs console=${console},${baudrate} root=/dev/nfs nfsroot=${serverip}:${nfsroot},v3,tcp\0" \
+	"nfsroot=/home/user/nfsroot \0" \
+	"netargs=setenv bootargs console=${console},${baudrate} root=/dev/nfs ip=${ipaddr} nfsroot=${serverip}:${nfsroot},v3,tcp\0" \
 	"image=/boot/zImage\0" \
 	"fdt_file=/boot/imx6q-marta.dtb\0" \
 	"fdt_addr=0x18000000\0" \

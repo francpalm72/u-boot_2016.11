@@ -380,9 +380,9 @@ const char *bootdelay_process(void)
 	//BOOT.16
 	if(getenv("slntcnsl") == NULL){
 		s = getenv("boot_version");
-		printf("BOOT_VERSION:   %s\n", s);
+		printf("BOOT_VERSION: %s\n", s);
 		s = getenv("boot_build");
-		printf("BOOT_BUILD:  %s\n", s);
+		printf("BOOT_BUILD:   %s\n", s);
 		printf ("DEVELOPMENT_MODE: %d\n", developmentmode);
 		printf ("MAINTENANCE_MODE: %d\n", maintenancemode);
 	

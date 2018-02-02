@@ -848,7 +848,7 @@ int board_late_init(void)
 
 #ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
 	
-	setenv("boot_version", "P/N:16100043920.1 - (Feb 02 2018)");
+	setenv("boot_version", "P/N:16100043920.01 - (V04 Feb-02-2018)");
 	setenv("boot_build", U_BOOT_VERSION_STRING);
 	
 	//if (is_mx6dqp())
