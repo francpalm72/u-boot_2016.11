@@ -40,6 +40,10 @@ DECLARE_GLOBAL_DATA_PTR;
 	PAD_CTL_SPEED_MED | PAD_CTL_DSE_40ohm |			\
 	PAD_CTL_SRE_FAST  | PAD_CTL_HYS)
 
+#define GPIO_PAD_CTRL (PAD_CTL_PKE | PAD_CTL_PUE |          \
+	PAD_CTL_PUS_100K_UP | PAD_CTL_SPEED_MED |               \
+	PAD_CTL_DSE_40ohm   | PAD_CTL_SRE_FAST)
+	
 #define USDHC_PAD_CTRL (PAD_CTL_PUS_22K_UP |			\
 	PAD_CTL_SPEED_LOW | PAD_CTL_DSE_120ohm |			\
 	PAD_CTL_SRE_FAST  | PAD_CTL_HYS)
@@ -57,11 +61,11 @@ DECLARE_GLOBAL_DATA_PTR;
 #define GPMI_PAD_CTRL2 (GPMI_PAD_CTRL0 | GPMI_PAD_CTRL1)
 
 /*#define PC MUX_PAD_CTRL(I2C_PAD_CTRL)*/
-
+/*
 #define WEIM_NOR_PAD_CTRL (PAD_CTL_PKE | PAD_CTL_PUE |          \
 	PAD_CTL_PUS_100K_UP | PAD_CTL_SPEED_MED |               \
 	PAD_CTL_DSE_40ohm   | PAD_CTL_SRE_FAST)
-
+*/
 //#define I2C_PMIC	1
 
 int dram_init(void)
@@ -73,7 +77,28 @@ int dram_init(void)
 
 static iomux_v3_cfg_t const uart3_pads[] = {
 	MX6_PAD_EIM_D24__UART3_TX_DATA | MUX_PAD_CTRL(UART_PAD_CTRL),
-	MX6_PAD_EIM_D25__UART3_RX_DATA | MUX_PAD_CTRL(UART_PAD_CTRL),
+	MX6_PAD_EIM_D25__UART3_RX_DATA | MUX_PAD_CTRL(UART_PAD_CTRL)
+};
+
+static iomux_v3_cfg_t const gpio_pads[] = {
+	MX6_PAD_NANDF_D1__GPIO2_IO01 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
+	MX6_PAD_EIM_CS1__GPIO2_IO24 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
+	MX6_PAD_EIM_WAIT__GPIO5_IO00 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
+	MX6_PAD_DISP0_DAT17__GPIO5_IO11 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
+	MX6_PAD_DISP0_DAT14__GPIO5_IO08 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
+	MX6_PAD_NANDF_D6__GPIO2_IO06 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
+	MX6_PAD_EIM_A22__GPIO2_IO16 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
+	MX6_PAD_EIM_A21__GPIO2_IO17 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
+	MX6_PAD_EIM_A20__GPIO2_IO18 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
+	MX6_PAD_EIM_A19__GPIO2_IO19 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
+	MX6_PAD_EIM_A18__GPIO2_IO20 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
+	MX6_PAD_EIM_A17__GPIO2_IO21 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
+	MX6_PAD_EIM_A16__GPIO2_IO22 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
+	MX6_PAD_EIM_BCLK__GPIO6_IO31 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
+	MX6_PAD_NANDF_D7__GPIO2_IO07 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
+	MX6_PAD_EIM_A25__GPIO5_IO02 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
+	MX6_PAD_DISP0_DAT13__GPIO5_IO07 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
+	MX6_PAD_GPIO_19__GPIO4_IO05 | MUX_PAD_CTRL(GPIO_PAD_CTRL)
 };
 
 static iomux_v3_cfg_t const enet_pads[] = {
@@ -102,7 +127,7 @@ static iomux_v3_cfg_t const enet_pads[] = {
 	MX6_PAD_RGMII_RD1__RGMII_RD1	| MUX_PAD_CTRL(ENET_PAD_CTRL),
 	MX6_PAD_RGMII_RD2__RGMII_RD2	| MUX_PAD_CTRL(ENET_PAD_CTRL),
 	MX6_PAD_RGMII_RD3__RGMII_RD3	| MUX_PAD_CTRL(ENET_PAD_CTRL),
-	MX6_PAD_RGMII_RX_CTL__RGMII_RX_CTL	| MUX_PAD_CTRL(ENET_PAD_CTRL),
+	MX6_PAD_RGMII_RX_CTL__RGMII_RX_CTL	| MUX_PAD_CTRL(ENET_PAD_CTRL)
 };
 
 /* I2C2 PMIC, iPod, Tuner, Codec, Touch, HDMI EDID, MIPI CSI2 card */
@@ -303,6 +328,11 @@ iomux_v3_cfg_t const usdhc4_pads[] = {
 static void setup_iomux_uart(void)
 {
 	imx_iomux_v3_setup_multiple_pads(uart3_pads, ARRAY_SIZE(uart3_pads));
+}
+
+static void setup_iomux_gpio(void)
+{
+	imx_iomux_v3_setup_multiple_pads(gpio_pads, ARRAY_SIZE(gpio_pads));
 }
 
 #ifdef CONFIG_FSL_ESDHC
@@ -642,7 +672,7 @@ int overwrite_console(void)
 int board_early_init_f(void)
 {
 	setup_iomux_uart();
-
+	setup_iomux_gpio();
 //#ifdef CONFIG_NAND_MXS
 //	setup_gpmi_nand();
 //#endif
@@ -693,24 +723,24 @@ int board_init(void)
 	gpio_direction_output(IMX_GPIO_NR(4, 5), 0);	//GPIO_19__GPIO4_IO05  P5  IMX6_SPARE_LED
 	
 	/*BOOT.4*/
-	gpio_set_value(IMX_GPIO_NR(2, 1), 0);	//NANDF_D1__GPIO2_IO01  C17  MAINT_SK_CPU
-	gpio_set_value(IMX_GPIO_NR(2, 24), 0);	//EIM_CS1__GPIO2_IO24  J23  SKR_PWR_CTR_CPU
-	gpio_set_value(IMX_GPIO_NR(5, 0), 0);	//EIM_WAIT__GPIO5_IO00 M25  BIT_L_CPU
-	gpio_set_value(IMX_GPIO_NR(5, 11), 0);	//DISP0_DAT17__GPIO5_IO11  U24  RESET_L_CPU
-	gpio_set_value(IMX_GPIO_NR(5, 8), 0);	//DISP0_DAT14__GPIO5_IO08  U25  GO_SW_CPU
-	gpio_set_value(IMX_GPIO_NR(2, 6), 0);	//NANDF_D6__GPIO2_IO06  E17  ESA_CPU
-	gpio_set_value(IMX_GPIO_NR(2, 16), 0);	//EIM_A22__GPIO2_IO16  F24  EAB_CPU
-	gpio_set_value(IMX_GPIO_NR(2, 17), 0);	//EIM_A21__GPIO2_IO17  H23  EFB_CPU
-	gpio_set_value(IMX_GPIO_NR(2, 18), 0);	//EIM_A20__GPIO2_IO18  H22  EDB_CPU
-	gpio_set_value(IMX_GPIO_NR(2, 19), 0);	//EIM_A19__GPIO2_IO19  G25  EPA_CPU
-	gpio_set_value(IMX_GPIO_NR(2, 20), 0);	//EIM_A18__GPIO2_IO20  J22  ESS_CPU
-	gpio_set_value(IMX_GPIO_NR(2, 21), 0);	//EIM_A17__GPIO2_IO21  G24  EEO_CPU
-	gpio_set_value(IMX_GPIO_NR(2, 22), 0);	//EIM_A16__GPIO2_IO22  H25  EASAU_CPU
-	gpio_set_value(IMX_GPIO_NR(6, 31), 0);	//EIM_BCLK__GPIO6_IO31 N22  EBT_SK_CPU
-	gpio_set_value(IMX_GPIO_NR(2, 7), 0);	//NANDF_D7__GPIO2_IO07  C18  ESF_CPU
-	gpio_set_value(IMX_GPIO_NR(5, 2), 0);	//EIM_A25__GPIO5_IO02  H19  EBT_CPU
-	gpio_set_value(IMX_GPIO_NR(5, 7), 0);	//DISP0_DAT13__GPIO5_IO07  R20  OK_CPU
-	gpio_set_value(IMX_GPIO_NR(4, 5), 0);	//GPIO_19__GPIO4_IO05  P5  IMX6_SPARE_LED
+	//gpio_set_value(IMX_GPIO_NR(2, 1), 0);	//NANDF_D1__GPIO2_IO01  C17  MAINT_SK_CPU
+	//gpio_set_value(IMX_GPIO_NR(2, 24), 0);	//EIM_CS1__GPIO2_IO24  J23  SKR_PWR_CTR_CPU
+	//gpio_set_value(IMX_GPIO_NR(5, 0), 0);	//EIM_WAIT__GPIO5_IO00 M25  BIT_L_CPU
+	//gpio_set_value(IMX_GPIO_NR(5, 11), 0);	//DISP0_DAT17__GPIO5_IO11  U24  RESET_L_CPU
+	//gpio_set_value(IMX_GPIO_NR(5, 8), 0);	//DISP0_DAT14__GPIO5_IO08  U25  GO_SW_CPU
+	//gpio_set_value(IMX_GPIO_NR(2, 6), 0);	//NANDF_D6__GPIO2_IO06  E17  ESA_CPU
+	//gpio_set_value(IMX_GPIO_NR(2, 16), 0);	//EIM_A22__GPIO2_IO16  F24  EAB_CPU
+	//gpio_set_value(IMX_GPIO_NR(2, 17), 0);	//EIM_A21__GPIO2_IO17  H23  EFB_CPU
+	//gpio_set_value(IMX_GPIO_NR(2, 18), 0);	//EIM_A20__GPIO2_IO18  H22  EDB_CPU
+	//gpio_set_value(IMX_GPIO_NR(2, 19), 0);	//EIM_A19__GPIO2_IO19  G25  EPA_CPU
+	//gpio_set_value(IMX_GPIO_NR(2, 20), 0);	//EIM_A18__GPIO2_IO20  J22  ESS_CPU
+	//gpio_set_value(IMX_GPIO_NR(2, 21), 0);	//EIM_A17__GPIO2_IO21  G24  EEO_CPU
+	//gpio_set_value(IMX_GPIO_NR(2, 22), 0);	//EIM_A16__GPIO2_IO22  H25  EASAU_CPU
+	//gpio_set_value(IMX_GPIO_NR(6, 31), 0);	//EIM_BCLK__GPIO6_IO31 N22  EBT_SK_CPU
+	//gpio_set_value(IMX_GPIO_NR(2, 7), 0);	//NANDF_D7__GPIO2_IO07  C18  ESF_CPU
+	//gpio_set_value(IMX_GPIO_NR(5, 2), 0);	//EIM_A25__GPIO5_IO02  H19  EBT_CPU
+	//gpio_set_value(IMX_GPIO_NR(5, 7), 0);	//DISP0_DAT13__GPIO5_IO07  R20  OK_CPU
+	//gpio_set_value(IMX_GPIO_NR(4, 5), 0);	//GPIO_19__GPIO4_IO05  P5  IMX6_SPARE_LED
 	
 	
 	
@@ -848,7 +878,7 @@ int board_late_init(void)
 
 #ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
 	
-	setenv("boot_version", "P/N:16100043920.01 - (V04 Feb-02-2018)");
+	setenv("boot_version", "P/N:16100043920.01 - (V05 Feb-13-2018)");
 	setenv("boot_build", U_BOOT_VERSION_STRING);
 	
 	//if (is_mx6dqp())

@@ -109,7 +109,7 @@
 					"echo PROCEDURE COMPLETED! NOW YOU CAN REBOOT!; " \
 				"else " \
 					"echo MD5SUM VERIFY FAILED!; " \
-					"md ${loadaddrmd50} 8; " \
+					"md.b ${loadaddrmd50} 20; " \
 				"fi; " \
 			"else " \
 				"echo MD5 FILE LENGTH ERROR; " \
@@ -139,7 +139,7 @@
 					"bootm ${loadaddrbin}; " \
 				"else " \
 					"echo MD5SUM VERIFY FAILED!; " \
-					"md ${loadaddrmd50} 8; " \
+					"md.b ${loadaddrmd50} 20; " \
 				"fi; " \
 			"else " \
 				"echo MD5 FILE LENGTH ERROR; " \
