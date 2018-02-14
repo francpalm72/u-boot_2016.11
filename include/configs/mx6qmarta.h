@@ -79,7 +79,7 @@
 	"ipaddr=192.168.1.9\0" \
 	"serverip=192.168.1.10\0" \
 	"development=0\0" \
-	"silentconsole=0\0" \
+	"silentconsole=1\0" \
 	"loadaddrmd50=0x11018000\0" \
 	"loadaddrmd51=0x11018004\0" \
 	"loadaddrmd52=0x11018008\0" \
@@ -93,6 +93,9 @@
 	"operativeimg=img.boot\0" \
 	"maintimg=maint.boot\0" \
 	"ubootimg=u-boot.imx\0" \
+	"erasebin=setenv filesize 0x80000; mw.b ${loadaddrbin} 0xff ${filesize}; " \
+				"ext4write mmc ${mmcdev}:${mmcpart} ${loadaddrbin} ${operativedir}${operativeimg} ${filesize}; " \
+				"ext4write mmc ${mmcdev}:${mmcpart} ${loadaddrbin} ${operativedir}${operativeimg}.md5 10; \0" \
 	"updatebin=setenv filesize 0; tftpboot ${loadaddrmd50} ${serverip}:${operativeimg}.md5; " \
 			"if test ${filesize} = 10; then " \
 				"setenv filesize 0; tftpboot ${loadaddrbin} ${serverip}:${operativeimg}; " \

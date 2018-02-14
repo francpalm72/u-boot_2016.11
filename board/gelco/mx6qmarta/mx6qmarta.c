@@ -98,7 +98,8 @@ static iomux_v3_cfg_t const gpio_pads[] = {
 	MX6_PAD_NANDF_D7__GPIO2_IO07 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
 	MX6_PAD_EIM_A25__GPIO5_IO02 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
 	MX6_PAD_DISP0_DAT13__GPIO5_IO07 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
-	MX6_PAD_GPIO_19__GPIO4_IO05 | MUX_PAD_CTRL(GPIO_PAD_CTRL)
+	MX6_PAD_GPIO_19__GPIO4_IO05 | MUX_PAD_CTRL(GPIO_PAD_CTRL),
+	MX6_PAD_EIM_EB2__GPIO2_IO30 | MUX_PAD_CTRL(GPIO_PAD_CTRL)
 };
 
 static iomux_v3_cfg_t const enet_pads[] = {
@@ -721,28 +722,7 @@ int board_init(void)
 	gpio_direction_output(IMX_GPIO_NR(5, 2), 0);	//EIM_A25__GPIO5_IO02  H19  EBT_CPU
 	gpio_direction_output(IMX_GPIO_NR(5, 7), 0);	//DISP0_DAT13__GPIO5_IO07  R20  OK_CPU
 	gpio_direction_output(IMX_GPIO_NR(4, 5), 0);	//GPIO_19__GPIO4_IO05  P5  IMX6_SPARE_LED
-	
-	/*BOOT.4*/
-	//gpio_set_value(IMX_GPIO_NR(2, 1), 0);	//NANDF_D1__GPIO2_IO01  C17  MAINT_SK_CPU
-	//gpio_set_value(IMX_GPIO_NR(2, 24), 0);	//EIM_CS1__GPIO2_IO24  J23  SKR_PWR_CTR_CPU
-	//gpio_set_value(IMX_GPIO_NR(5, 0), 0);	//EIM_WAIT__GPIO5_IO00 M25  BIT_L_CPU
-	//gpio_set_value(IMX_GPIO_NR(5, 11), 0);	//DISP0_DAT17__GPIO5_IO11  U24  RESET_L_CPU
-	//gpio_set_value(IMX_GPIO_NR(5, 8), 0);	//DISP0_DAT14__GPIO5_IO08  U25  GO_SW_CPU
-	//gpio_set_value(IMX_GPIO_NR(2, 6), 0);	//NANDF_D6__GPIO2_IO06  E17  ESA_CPU
-	//gpio_set_value(IMX_GPIO_NR(2, 16), 0);	//EIM_A22__GPIO2_IO16  F24  EAB_CPU
-	//gpio_set_value(IMX_GPIO_NR(2, 17), 0);	//EIM_A21__GPIO2_IO17  H23  EFB_CPU
-	//gpio_set_value(IMX_GPIO_NR(2, 18), 0);	//EIM_A20__GPIO2_IO18  H22  EDB_CPU
-	//gpio_set_value(IMX_GPIO_NR(2, 19), 0);	//EIM_A19__GPIO2_IO19  G25  EPA_CPU
-	//gpio_set_value(IMX_GPIO_NR(2, 20), 0);	//EIM_A18__GPIO2_IO20  J22  ESS_CPU
-	//gpio_set_value(IMX_GPIO_NR(2, 21), 0);	//EIM_A17__GPIO2_IO21  G24  EEO_CPU
-	//gpio_set_value(IMX_GPIO_NR(2, 22), 0);	//EIM_A16__GPIO2_IO22  H25  EASAU_CPU
-	//gpio_set_value(IMX_GPIO_NR(6, 31), 0);	//EIM_BCLK__GPIO6_IO31 N22  EBT_SK_CPU
-	//gpio_set_value(IMX_GPIO_NR(2, 7), 0);	//NANDF_D7__GPIO2_IO07  C18  ESF_CPU
-	//gpio_set_value(IMX_GPIO_NR(5, 2), 0);	//EIM_A25__GPIO5_IO02  H19  EBT_CPU
-	//gpio_set_value(IMX_GPIO_NR(5, 7), 0);	//DISP0_DAT13__GPIO5_IO07  R20  OK_CPU
-	//gpio_set_value(IMX_GPIO_NR(4, 5), 0);	//GPIO_19__GPIO4_IO05  P5  IMX6_SPARE_LED
-	
-	
+	gpio_direction_output(IMX_GPIO_NR(2, 30), 1);	//EIM_EB2__GPIO2_IO30  E22  CMD_SPIRA_CPU
 	
 	/*
 	//NUOVA IMPOSTAZIONE GPIO PER DD1
@@ -878,7 +858,7 @@ int board_late_init(void)
 
 #ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
 	
-	setenv("boot_version", "P/N:16100043920.01 - (V05 Feb-13-2018)");
+	setenv("boot_version", "P/N:16100043920.01 - (V06 Feb-14-2018)");
 	setenv("boot_build", U_BOOT_VERSION_STRING);
 	
 	//if (is_mx6dqp())
