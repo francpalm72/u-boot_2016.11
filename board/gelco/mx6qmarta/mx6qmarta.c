@@ -852,6 +852,9 @@ static const struct boot_mode board_boot_modes[] = {
 
 int board_late_init(void)
 {
+	char *s;
+	int bootdelay;
+	
 #ifdef CONFIG_CMD_BMODE
 	add_board_boot_modes(board_boot_modes);
 #endif
@@ -859,9 +862,19 @@ int board_late_init(void)
 #ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
 	
 	setenv("slntcnsl", NULL);
-	setenv("boot_version", "P/N:16100043920.01 - (V08 Feb-16-2018)");
+	setenv("boot_version", "P/N:16100043920.01 - (V09 Feb-25-2018)");
 	setenv("boot_build", U_BOOT_VERSION_STRING);
 	
+	if(getenv("bootdelay") == NULL){
+		setenv("bootdelay", "1");
+	}
+	else{
+		s = getenv("bootdelay");
+		bootdelay = s ? (int)simple_strtol(s, NULL, 10) : CONFIG_BOOTDELAY;
+		if(bootdelay==0){
+			setenv("bootdelay", "1");
+		}
+	}
 	//if (is_mx6dqp())
 	//	setenv("board_rev", "MX6QP");
 	//else if (is_mx6dq())
