@@ -125,9 +125,9 @@
 			"mw.b ${loadaddrbin} 0xff 0x2000; " \
 			"mmc write ${loadaddrbin} 0x600 0x10; " \
 			"reset; \0" \
-	"bootcmd_maint=tftpboot ${loadaddrbin} ${serverip}:${maintimg}; bootm ${loadaddrbin}\0" \
-	"bootcmd_operdev=tftpboot ${loadaddrbin} ${serverip}:${operativeimg}; bootm ${loadaddrbin}\0" \
-	"bootcmd_oper=setenv filesize 0; " \
+	"bootcmd_maint=run mmcargs; tftpboot ${loadaddrbin} ${serverip}:${maintimg}; bootm ${loadaddrbin}\0" \
+	"bootcmd_operdev=run mmcargs; tftpboot ${loadaddrbin} ${serverip}:${operativeimg}; bootm ${loadaddrbin}\0" \
+	"bootcmd_oper=run mmcargs; setenv filesize 0; " \
 			"ext4load mmc ${mmcdev}:${mmcpart} ${loadaddrmd50} ${operativedir}${operativeimg}.md5; " \
 			"if test ${filesize} = 10; then " \
 				"setenv filesize 0; " \

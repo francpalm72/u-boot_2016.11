@@ -862,7 +862,7 @@ int board_late_init(void)
 #ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
 	
 	setenv("slntcnsl", NULL);
-	setenv("boot_version", "P/N:16100043920.01 - (V09 Feb-25-2018)");
+	setenv("boot_version", "P/N:16100043920.01 - (V10 Mar-13-2018)");
 	setenv("boot_build", U_BOOT_VERSION_STRING);
 	
 	if(getenv("bootdelay") == NULL){
