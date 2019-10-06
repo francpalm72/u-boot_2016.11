@@ -715,23 +715,23 @@ int board_init(void)
 	
 	//==== IMX6 DISP CSI ====
 	//gpio_direction_output(IMX_GPIO_NR(5, 19), 0);	//CSI0_MCLK__GPIO5_IO19  P4  ARM_TRACE_CTL
-	//gpio_direction_output(IMX_GPIO_NR(5, 18), 0);	//CSI0_PIXCLK__GPIO5_IO18  P1  ARM_EVENTO
-	//gpio_direction_output(IMX_GPIO_NR(5, 21), 0);	//CSI0_VSYNC__GPIO5_IO21   N2  ARM_TRACE00
-	//gpio_direction_output(IMX_GPIO_NR(5, 20), 0);	//CSI0_DATA_EN__GPIO5_IO20 P3  ARM_TRACE_CLK
-	//gpio_direction_output(IMX_GPIO_NR(5, 22), 0);	//CSI0_DAT4__GPIO5_IO22    N1  ARM_TRACE01
-	//gpio_direction_output(IMX_GPIO_NR(5, 23), 0);	//CSI0_DAT5__GPIO5_IO23    P2  ARM_TRACE02
-	//gpio_direction_output(IMX_GPIO_NR(5, 24), 0);	//CSI0_DAT6__GPIO5_IO24    N4  ARM_TRACE03
-	//gpio_direction_output(IMX_GPIO_NR(5, 25), 0);	//CSI0_DAT7__GPIO5_IO25    N3  ARM_TRACE04
-	//gpio_direction_output(IMX_GPIO_NR(5, 26), 0);	//CSI0_DAT8__GPIO5_IO26    N6  ARM_TRACE05
-	//gpio_direction_output(IMX_GPIO_NR(5, 27), 0);	//CSI0_DAT9__GPIO5_IO27    N5  ARM_TRACE06
-	//gpio_direction_output(IMX_GPIO_NR(5, 28), 0);	//CSI0_DAT10__GPIO5_IO28   M1  ARM_TRACE07
+	gpio_direction_output(IMX_GPIO_NR(5, 18), 0);	//CSI0_PIXCLK__GPIO5_IO18  P1  ARM_EVENTO
+	gpio_direction_output(IMX_GPIO_NR(5, 21), 0);	//CSI0_VSYNC__GPIO5_IO21   N2  ARM_TRACE00
+	gpio_direction_output(IMX_GPIO_NR(5, 20), 0);	//CSI0_DATA_EN__GPIO5_IO20 P3  ARM_TRACE_CLK
+	gpio_direction_output(IMX_GPIO_NR(5, 22), 0);	//CSI0_DAT4__GPIO5_IO22    N1  ARM_TRACE01
+	gpio_direction_output(IMX_GPIO_NR(5, 23), 0);	//CSI0_DAT5__GPIO5_IO23    P2  ARM_TRACE02
+	gpio_direction_output(IMX_GPIO_NR(5, 24), 0);	//CSI0_DAT6__GPIO5_IO24    N4  ARM_TRACE03
+	gpio_direction_output(IMX_GPIO_NR(5, 25), 0);	//CSI0_DAT7__GPIO5_IO25    N3  ARM_TRACE04
+	gpio_direction_output(IMX_GPIO_NR(5, 26), 0);	//CSI0_DAT8__GPIO5_IO26    N6  ARM_TRACE05
+	gpio_direction_output(IMX_GPIO_NR(5, 27), 0);	//CSI0_DAT9__GPIO5_IO27    N5  ARM_TRACE06
+	gpio_direction_output(IMX_GPIO_NR(5, 28), 0);	//CSI0_DAT10__GPIO5_IO28   M1  ARM_TRACE07
 	//gpio_direction_output(IMX_GPIO_NR(5, 29), 0);	//CSI0_DAT11__GPIO5_IO29   M3  ARM_TRACE08
 	//gpio_direction_output(IMX_GPIO_NR(5, 30), 0);	//CSI0_DAT12__GPIO5_IO30   M2  ARM_TRACE09
 	//gpio_direction_output(IMX_GPIO_NR(5, 31), 0);	//CSI0_DAT13__GPIO5_IO31   L1  ARM_TRACE10
 	//gpio_direction_output(IMX_GPIO_NR(6, 0), 0);	//CSI0_DAT14__GPIO6_IO00   M4  ARM_TRACE11
 	//gpio_direction_output(IMX_GPIO_NR(6, 1), 0);	//CSI0_DAT15__GPIO6_IO01   M5  ARM_TRACE12
-	//gpio_direction_output(IMX_GPIO_NR(6, 2), 0);	//CSI0_DAT16__GPIO6_IO02   L4  ARM_TRACE14
-	//gpio_direction_output(IMX_GPIO_NR(6, 3), 0);	//CSI0_DAT17__GPIO6_IO03   L3  ARM_TRACE13
+	//gpio_direction_output(IMX_GPIO_NR(6, 2), 0);	//CSI0_DAT16__GPIO6_IO02   L4  ARM_TRACE13
+	//gpio_direction_output(IMX_GPIO_NR(6, 3), 0);	//CSI0_DAT17__GPIO6_IO03   L3  ARM_TRACE14
 	//gpio_direction_output(IMX_GPIO_NR(6, 4), 0);	//CSI0_DAT18__GPIO6_IO04   M6  ARM_TRACE15
 	
 	gpio_direction_output(IMX_GPIO_NR(6, 5), 0);	//CSI0_DAT19__GPIO6_IO05	L6  SPARE_1_OUT_CPU
@@ -814,7 +814,7 @@ int board_init(void)
 	//gpio_direction_output(IMX_GPIO_NR(6, 16), 0);	//NAND_CS3_B__GPIO6_IO16	D16  STATO_D1_CPU
 	
 	gpio_direction_output(IMX_GPIO_NR(6, 9), 0);	//NAND_WP_B__GPIO6_IO09		E15  BIT_L_CPU
-	//gpio_direction_output(IMX_GPIO_NR(6, 10), 0);	//NAND_READY__GPIO6_IO10	B16  T0_CONN_CPU
+	//gpio_direction_output(IMX_GPIO_NR(6, 10), 0);	//NAND_RB0__GPIO6_IO10	B16  T0_CONN_CPU
 	
 	gpio_direction_output(IMX_GPIO_NR(2, 0), 0);	//NAND_DATA00__GPIO2_IO00		A18  INH_G_SWITCH_CPU
 	gpio_direction_output(IMX_GPIO_NR(2, 1), 0);	//NAND_DATA01__GPIO2_IO01		C17  MAINT_SK_CPU
