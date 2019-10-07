@@ -226,7 +226,9 @@ static iomux_v3_cfg_t const eimnor_pads[] = {
 static void eimnor_cs_setup(void)
 {
 	struct weim *weim_regs = (struct weim *)WEIM_BASE_ADDR;
-
+	struct mxc_ccm_reg *mxc_ccm = (struct mxc_ccm_reg *)CCM_BASE_ADDR;
+	int reg;
+	
 	//writel(0x00020181, &weim_regs->cs0gcr1);
 	//writel(0x00000001, &weim_regs->cs0gcr2);
 	//writel(0x0a020000, &weim_regs->cs0rcr1);
@@ -243,7 +245,13 @@ static void eimnor_cs_setup(void)
 	writel(0x00000000, &weim_regs->cs1wcr2);
 	writel(0x00000020, &weim_regs->wcr);
 	writel(0x00000010, &weim_regs->wiar);
+	
+	
 	set_chipselect_size(CS0_64M_CS1_64M);
+	
+	reg = readl(&mxc_ccm->CCGR6);
+	reg |= MXC_CCM_CCGR6_EMI_SLOW_MASK;
+	writel(reg, &mxc_ccm->CCGR6);
 }
 
 static void setup_iomux_eimnor(void)
@@ -885,7 +893,7 @@ int checkboard(void)
 		break;
 	}
 
-	printf("Board: MX6Q-Marte SD4 DD2 rev%s\n", revname);
+	printf("Board: MX6Q-Marte SD3 DD2 rev%s\n", revname);
 
 	return 0;
 }
