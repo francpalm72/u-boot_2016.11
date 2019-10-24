@@ -736,7 +736,7 @@ int board_init(void)
 	gpio_direction_output(IMX_GPIO_NR(4, 24), 1);	//DISP0_DAT3__GPIO4_IO24	P21  ECSPI3_SS0
 	gpio_direction_output(IMX_GPIO_NR(4, 25), 0);	//DISP0_DAT4__GPIO4_IO25	P20  SPARE_3_OUT_CPU
 	gpio_direction_output(IMX_GPIO_NR(4, 26), 0);	//DISP0_DAT5__GPIO4_IO26	R25  SPARE_2_OUT_CPU
-	gpio_direction_output(IMX_GPIO_NR(4, 27), 0);	//DISP0_DAT6__GPIO4_IO27	R23  SPARE_2_IN_CPU
+	//gpio_direction_output(IMX_GPIO_NR(4, 27), 0);	//DISP0_DAT6__GPIO4_IO27	R23  SPARE_2_IN_CPU
 	//gpio_direction_output(IMX_GPIO_NR(4, 28), 0);	//DISP0_DAT7__GPIO4_IO28	R24  STATUS_ANT_CPU
 	gpio_direction_output(IMX_GPIO_NR(4, 29), 0);	//DISP0_DAT8__GPIO4_IO29	R22  CMD_CONSENSOFUOCO_CPU
 	gpio_direction_output(IMX_GPIO_NR(4, 30), 0);	//DISP0_DAT9__GPIO4_IO30	T25  CMD_FMP_INT_CPU
@@ -865,7 +865,7 @@ int board_late_init(void)
 #endif
 
 #ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
-	setenv("board_name", "MX6QMARTA");
+	setenv("board_name", "MX6QMARTE_DD2");
 
 	if (is_mx6dqp())
 		setenv("board_rev", "MX6QP");
